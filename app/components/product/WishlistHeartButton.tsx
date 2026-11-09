@@ -3,6 +3,8 @@ interface WishlistHeartButtonProps {
   className: string;
   ariaLabel: string;
   onClick: () => void;
+  disabled?: boolean;
+  pressed?: boolean;
 }
 
 /** `SallaButton`'s icon markup, but keeping `data-id` like Twig's `<salla-button>`: wishlist apps find the heart by it. */
@@ -11,6 +13,8 @@ export function WishlistHeartButton({
   className,
   ariaLabel,
   onClick,
+  disabled,
+  pressed,
 }: WishlistHeartButtonProps) {
   return (
     <div className="s-button-wrap">
@@ -20,6 +24,8 @@ export function WishlistHeartButton({
         data-id={productId}
         aria-label={ariaLabel}
         onClick={onClick}
+        disabled={disabled}
+        aria-pressed={pressed}
       >
         <span className="s-button-text">
           <i className="sicon-heart" />

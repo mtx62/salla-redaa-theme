@@ -4,7 +4,7 @@
     "ar": "salla-react-theme",
     "en": "salla-react-theme"
   },
-  "repository": "https://github.com/SallaApp/theme-raed-react",
+  "repository": "https://github.com/mtx62/redaa",
   "author_email": "support@salla.sa",
   "features": [
     "mega-menu",
@@ -28,6 +28,53 @@
     {
       "type": "static",
       "format": "title",
+      "id": "theme-colors-title",
+      "value": "<div class='rounded-lg' style='background-color: #f4e8d6; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'>ألوان وهوية الثيم</h6></div>",
+      "variant": "h6"
+    },
+    {
+      "type": "string",
+      "icon": "sicon-color-palette",
+      "label": "اللون الأساسي للثيم",
+      "id": "theme_color_primary",
+      "format": "color",
+      "required": false,
+      "value": "#c84b20",
+      "description": "اللون الرئيسي للأزرار والروابط وشارات المنتجات."
+    },
+    {
+      "type": "string",
+      "icon": "sicon-color-palette",
+      "label": "لون العناوين والأزرار الداكنة",
+      "id": "theme_color_secondary",
+      "format": "color",
+      "required": false,
+      "value": "#493039",
+      "description": "لون عناوين المنتجات والأقسام."
+    },
+    {
+      "type": "string",
+      "icon": "sicon-color-palette",
+      "label": "لون الشريط العلوي",
+      "id": "theme_top_header_bg",
+      "format": "color",
+      "required": false,
+      "value": "#f4e8d6",
+      "description": "لون خلفية الشريط العلوي (Top Header)."
+    },
+    {
+      "type": "string",
+      "icon": "sicon-image",
+      "label": "شعار المتجر المخصص (اختياري)",
+      "id": "header_custom_logo",
+      "format": "image",
+      "required": false,
+      "value": null,
+      "description": "يمكنك رفع شعار مخصص للثيم، وإذا ترك فارغاً سيتم استخدام شعار المتجر من لوحة تحكم سلة."
+    },
+    {
+      "type": "static",
+      "format": "title",
       "id": "static-label2",
       "value": "<div class='rounded-lg' style='background-color: #21636d; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'> خيارات الهيدر</h6></div>",
       "variant": "h6"
@@ -43,9 +90,9 @@
       "required": true,
       "selected": [
         {
-          "label": "المبسّط (Lite)",
-          "value": "lite",
-          "key": "header-layout-lite"
+          "label": "الافتراضي (Default)",
+          "value": "default",
+          "key": "header-layout-default"
         }
       ],
       "options": [
@@ -139,7 +186,7 @@
       "id": "topnav_is_dark",
       "format": "switch",
       "required": false,
-      "value": true,
+      "value": false,
       "selected": false
     },
     {
@@ -225,7 +272,7 @@
       "id": "footer_is_dark",
       "format": "switch",
       "required": false,
-      "value": true,
+      "value": false,
       "selected": false
     },
     {
@@ -2064,6 +2111,98 @@
           "required": false,
           "minLength": 1,
           "maxLength": 30
+        }
+      ]
+    },
+    {
+      "key": "c49a37e8-4687-4d92-95fb-6878e1c6d123",
+      "title": {
+        "en": "Store Features",
+        "ar": "مميزات المتجر"
+      },
+      "icon": "sicon-badge-percent",
+      "path": "home.store-features",
+      "image": "https://cdn.salla.network/images/themes/raed/preview-images/store-features.png?v=1.1",
+      "is_default": true,
+      "fields": [
+        {
+          "id": "features",
+          "key": "5a41bfb8-e791-4cf1-83c8-508bebb43122",
+          "type": "collection",
+          "format": "collection",
+          "label": "مميزات المتجر",
+          "description": null,
+          "labelHTML": null,
+          "item_label": "الميزة",
+          "icon": "sicon-list-add",
+          "value": [
+            {
+              "features.title": "توصيل سريع وآمن",
+              "features.description": "توصيل مجاني للطلبات المؤهلة",
+              "features.icon": "/images/service/1.png"
+            },
+            {
+              "features.title": "ضمان استرجاع الأموال",
+              "features.description": "سياسة إرجاع خلال 15 يوماً",
+              "features.icon": "/images/service/2.png"
+            },
+            {
+              "features.title": "استبدال واسترجاع سهل",
+              "features.description": "خدمة سريعة وموثوقة",
+              "features.icon": "/images/service/3.png"
+            },
+            {
+              "features.title": "دعم فني متميز",
+              "features.description": "خدمة عملاء على مدار 24 ساعة",
+              "features.icon": "/images/service/4.png"
+            }
+          ],
+          "fields": [
+            {
+              "id": "features.title",
+              "key": "b472e3a1-1c39-4d82-841f-3619dbbf1101",
+              "type": "string",
+              "format": "text",
+              "label": "عنوان الميزة",
+              "description": null,
+              "labelHTML": null,
+              "placeholder": "مثال: توصيل سريع وآمن",
+              "icon": "sicon-format-text-alt",
+              "value": null,
+              "multilanguage": true,
+              "required": true
+            },
+            {
+              "id": "features.description",
+              "key": "73df45f0-61ba-447e-8557-013695ce0891",
+              "type": "string",
+              "format": "text",
+              "label": "وصف الميزة",
+              "description": null,
+              "labelHTML": null,
+              "placeholder": "مثال: توصيل مجاني للطلبات المؤهلة",
+              "icon": "sicon-typography",
+              "value": null,
+              "multilanguage": true,
+              "required": false
+            },
+            {
+              "id": "features.icon",
+              "key": "c962b9a7-96a8-466d-aee1-4d1ebf399f2a",
+              "type": "string",
+              "format": "image",
+              "label": "صورة أو أيقونة الميزة",
+              "description": "المقاس المناسب 48*48 بكسل أو اسم الأيقونة",
+              "labelHTML": null,
+              "placeholder": "e.g. /images/service/1.png",
+              "icon": "sicon-image",
+              "value": null,
+              "required": false
+            }
+          ],
+          "required": false,
+          "minLength": 1,
+          "maxLength": 8
         }
       ]
     },

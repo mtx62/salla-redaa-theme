@@ -20,6 +20,7 @@ import {
   ProductsSlider,
   SliderProductsWithHeader,
   EnhancedSquareBanners,
+  StoreFeatures,
 } from './components/home';
 import { Blog } from './components/home/Blog';
 import {
@@ -28,11 +29,15 @@ import {
 } from './components/home/FeaturedProducts';
 import { PhotosSliderWithText } from './components/home/PhotosSliderWithText';
 import { registerThemeHooks } from './hooks';
+import { ProductCard } from './components/product/ProductCard';
 import { ProductListSkeleton } from './components/product/ProductListSkeleton';
 
 const ProductListPage = lazy(() =>
   import('./components/product/ProductListPage').then((m) => ({ default: m.ProductListPage }))
 );
+
+registry.register('product:card', ProductCard);
+registry.override('product:card', ProductCard);
 
 // Register theme-level hooks (AddProductToast, DigitalFilesSettings, etc.)
 registerThemeHooks();
@@ -73,6 +78,8 @@ registerHomeComponents({
   'fixed-products': FixedProducts,
   'slider-products-with-header': SliderProductsWithHeader,
   'enhanced-square-banners': EnhancedSquareBanners,
+  'store-features': StoreFeatures,
+  'home.store-features': StoreFeatures,
   blog: Blog,
 });
 
@@ -95,7 +102,7 @@ registerHomeComponentConfig({
   // same SliderSkeleton the SSR path shows (sized in home-blocks.scss), not the
   // engine's 400px/200px defaults with mismatched skeletons (CLS on scroll-in).
   'enhanced-slider': {
-    height: 'calc(100vw / 2.4)', // the 12:5 slide ratio
+    height: 'var(--store-hero-height, 720px)', // matches the split hero at each breakpoint
     placeholder: <SliderSkeleton />,
     // The boxed variant (`in_container`) is capped at the container width, so
     // its skeleton must be too (home-blocks.scss) or the reservation oversizes.

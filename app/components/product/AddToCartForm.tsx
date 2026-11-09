@@ -329,7 +329,7 @@ function StickyProductBar({
   const soldOut = product.is_out_of_stock && product.status !== 'out-and-notify';
   return (
     <section
-      className={`sticky-product-bar bg-white${soldOut ? ' sticky-product-bar--sold-out' : ''}`}
+      className={`sticky-product-bar${soldOut ? ' sticky-product-bar--sold-out' : ''}`}
     >
       {/* Live price on the start side, quantity stepper on the end side
           (replaces the standalone price section and the "Quantity" label). */}
@@ -382,7 +382,7 @@ function StickyProductBar({
  * Differs from the engine version: the form is a `flex flex-col gap-8` column and its
  * section blocks (weight / size-guide, attachments, price, quantity) render flat:
  * no `bg-white` card padding, no `rounded`, no per-block `mb`. The sticky
- * add-to-cart bar keeps `bg-white` for its mobile fixed-position backdrop.
+ * add-to-cart bar uses the shared paper surface for its fixed-position backdrop.
  * Upgrade notes: `FORKS.md`.
  */
 export function AddToCartForm({
@@ -392,6 +392,7 @@ export function AddToCartForm({
   formStartSlot,
   formEndSlot,
 }: AddToCartFormProps) {
+  const { t } = useTranslation();
   const [activeCollapse, setActiveCollapse] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
   // Replays the little pulse whenever the figures change (quantity / options).
@@ -419,10 +420,14 @@ export function AddToCartForm({
     };
   }, []);
 
-  // stable ref: an inline arrow re-runs on every render and resets the user's selection
+  // Give the mutable widget its own copy and seed after its mount has completed.
+  // Re-running this ref on every render would reset the customer's selections.
   const optionsRef = useCallback(
-    (el: { setOptionsData?: (data: never[]) => void } | null) =>
-      void el?.setOptionsData?.(product.options as never[]),
+    (el: { setOptionsData?: (data: never[]) => Promise<void> | void; seedSelectedOptions?: () => Promise<void> | void } | null) => {
+      if (!el) return;
+      void Promise.resolve(el.setOptionsData?.(structuredClone(product.options ?? []) as never[]))
+        .then(() => el.seedSelectedOptions?.());
+    },
     [product.options]
   );
 
@@ -471,6 +476,7 @@ export function AddToCartForm({
           // constructor-only options parse: push data via ref on client remount
           ref={optionsRef}
           options={JSON.stringify(product.options)}
+          productAvailable={!product.is_out_of_stock}
           productId={product.id}
         />
       )}

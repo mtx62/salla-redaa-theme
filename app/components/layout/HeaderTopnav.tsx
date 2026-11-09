@@ -101,29 +101,25 @@ export function HeaderTopnav() {
     },
   ];
 
+  const visibleActions = actions.filter((action) => action.show);
+
   return (
     <div className="site-header__topnav">
-      <div className="container site-header__topnav-inner">
-        <SallaMenu
-          source="footer"
-          topnav
-          className="site-header__topnav-menu"
-          suppressHydrationWarning
-        />
-
-        <div className="site-header__topnav-actions">
+      <div className="container site-header__topnav-inner flex items-center justify-end min-h-[36px] py-1">
+        <div className="site-header__topnav-actions flex items-center gap-3 ms-auto">
           <salla-bullet-delivery-tag data-testid="store-header-bullet-delivery-desktop" />
-          {actions
-            .filter((action) => action.show)
-            .map((action) => (
+          {visibleActions.map((action, idx, arr) => (
+            <span key={action.key} className="flex items-center">
               <TopnavAction
-                key={action.key}
                 icon={action.icon}
                 label={action.label}
                 onClick={() => openStoreSwitcher(action.key)}
               />
-            ))}
-          <TopnavContacts phone={store?.contacts?.phone} email={store?.contacts?.email} />
+              {idx < arr.length - 1 && (
+                <span className="text-[var(--store-line)] mx-1 text-xs" aria-hidden="true">|</span>
+              )}
+            </span>
+          ))}
         </div>
       </div>
     </div>

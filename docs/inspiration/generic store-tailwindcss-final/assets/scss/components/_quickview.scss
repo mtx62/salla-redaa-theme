@@ -1,0 +1,181 @@
+/* quickview */
+.gs-modal-overlay {
+    background-color: rgba(0, 0, 0, .7);
+}
+.quickview-modal {
+    .single-pro-img {
+        border: 1px solid $border-eee;
+        .single-slide {
+            background-color: $bg-fff;
+        }
+    }
+    .gs-close-modal {
+        background-color: rgba(224, 78, 78, 0.7);
+        &:after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            border: 2px solid $bg-fff;
+            border-radius: 50%;
+        }
+        &:hover {
+            background-color: #e04e4e;
+        }
+    }
+    .modal-content {
+        background-color: $bg-fff;
+        &:hover {
+            .qty-close {
+                height: 25px !important;
+            }
+        }
+    }
+    .quickview-pro-content {
+        h5 {
+            a {
+                color: $title-color;
+            }
+        }
+        .gs-pro-rating {
+            i {
+                color: $text-999;
+            }
+            i.fill {
+                color: #f4a263;
+            }
+        }
+    }
+    .gs-quickview-desc {
+        color: $text-777;
+    }
+    .gs-quickview-price {
+        span {
+            color: $title-color;
+        }
+    }
+    .gs-pro-variation {
+        ul {
+            li {
+                @include  ease3;
+                border: 1px solid $border-eee;
+                a {
+                    color: $title-color;
+                }
+                &:hover {
+                    border: 1px solid $secondary;
+                }
+            }
+        }
+    }
+    .gs-quickview-qty {
+        .qty-plus-minus {
+            border: 1px solid $border-eee;
+           background-color: $bg-fff;
+        }
+        input {
+            color: $title-color;
+        }
+    }
+    .gs-quickview-cart {
+        .gs-btn-1 {
+            border: 1px solid $secondary;
+            color: $secondary;
+            &:hover {
+                border: 1px solid $primary;
+                color: $text-fff;
+                background-color: $primary;
+            }
+        }
+    }
+    .owl-nav {
+        button {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, .7) !important;
+            border-radius: 10px;
+            span {
+                color: $text-fff;
+                font-size: 20px;
+            }
+        }
+        button.disabled {
+            background-color: rgba(0, 0, 0, .3) !important;
+        }
+        .owl-prev {
+            position: absolute;
+            top: 50%;
+            left: 0;
+        }
+        .owl-next {
+            position: absolute;
+            top: 50%;
+            right: 0;
+        }
+    }
+    .owl-dots {
+        display: none;
+    }
+    .owl-stage-outer {
+        height: 100%;
+        .owl-stage {
+            height: 100%;
+        }
+        .owl-item {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            background-color: $bg-gray;
+        }
+    }
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    0% {
+        transform: translateY(3rem);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutUp {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(3rem);
+    }
+}
+
+.gs-overflow-hidden{
+    overflow: hidden;
+}
+
+.cr-fadeInDown {
+    animation: fadeInDown 0.3s ease-in-out forwards;
+}
+
+.cr-fadeOutUp {
+    animation: fadeOutUp 0.2s ease-in-out forwards;
+}
+
+.gs-modal {
+    transform: translate(-50%, -50%);
+}
+
+.gs-pro-variation {
+    ul {
+        li.active {
+            background-color: $primary !important;
+            color: $text-fff !important;
+            border-color: $primary !important;
+            a {
+                color: $text-fff;
+            }
+        }
+    }
+}

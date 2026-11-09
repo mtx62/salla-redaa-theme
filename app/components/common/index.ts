@@ -6,3 +6,4 @@ export {
   type TestimonialItem,
   type TestimonialsCarouselProps,
 } from './TestimonialsCarousel';
+export { ReferenceIcon } from './ReferenceIcon';

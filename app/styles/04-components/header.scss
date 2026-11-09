@@ -127,12 +127,20 @@
 }
 
 .header-action {
-  @apply inline-grid place-items-center w-10 h-10 rounded-full text-gray-700 transition-colors hover:bg-gray-100 hover:text-primary;
+  @apply inline-grid place-items-center w-10 h-10 rounded-[10px] bg-[#f8f8fb] border border-[#eee] text-[#3d4750] transition-all duration-300;
+
+  &:hover {
+    @apply bg-primary border-primary text-white;
+
+    .site-header__burger span {
+      background-color: #ffffff;
+    }
+  }
 
   /* Size the action-button icons only — not the icons inside the user-menu
      dropdown items, which keep their own (smaller) size. */
   svg:not(.s-user-menu-dropdown-item *) {
-    @apply w-6 h-6;
+    @apply w-5 h-5;
   }
 }
 
@@ -664,9 +672,8 @@
 }
 
 .s-cart-summary-count {
-  /* Smaller than the plugin default (h-5 w-5, p-1) so it clears the bag icon;
-     `top/right: auto` cancel the plugin's corner anchor so the values below win. */
-  @apply h-4 w-4 p-0 text-[10px] leading-none -bottom-1.5 left-1/2 -translate-x-1/2 bg-red-700;
+  /* Generic store indigo badge */
+  @apply h-[18px] min-w-[18px] px-1 text-[10px] font-bold leading-none -bottom-1.5 left-1/2 -translate-x-1/2 bg-primary text-white rounded-full flex items-center justify-center;
   top: auto !important;
   right: auto;
 }
@@ -687,13 +694,15 @@
   @apply h-0;
 }
 
-/* --- top bar ----------------------------------------------------------- */
+/* --- top bar (Inspiration: warm paper transparent default, deep navy when topnav-is-dark) ------ */
 .site-header__topnav {
-  @apply hidden border-b border-gray-100 bg-white text-xs text-gray-500 lg:block;
+  @apply hidden border-none text-xs lg:block py-1;
+  background-color: transparent;
+  color: var(--store-ink, #493039);
 }
 
 .site-header__topnav-inner {
-  @apply flex min-h-[40px] items-center justify-between gap-6;
+  @apply flex min-h-[38px] items-center justify-between gap-6;
 }
 
 /* `<salla-menu topnav>` renders `.s-menu-topnav-list` — a plain row of links. */
@@ -705,14 +714,18 @@
   }
 
   a {
-    @apply whitespace-nowrap text-gray-500 transition-colors hover:text-primary;
+    @apply whitespace-nowrap transition-colors font-normal;
+    color: var(--store-ink, #493039);
+
+    &:hover {
+      color: var(--color-primary, #c84b20);
+    }
   }
 
-  /* The divider is each item's inline-end border. Equal padding on both of its
-     sides, and no column gap after it, keeps it centred between two links in
-     either direction. */
+  /* The divider is each item's inline-end border. */
   .s-menu-topnav-item {
     @apply px-3;
+    border-inline-end: 1px solid var(--store-line, #dfcfbc);
 
     &:first-child {
       @apply ps-0;
@@ -742,11 +755,11 @@
 }
 
 .site-header__topnav-actions {
-  @apply flex shrink-0 items-center gap-1;
+  @apply flex shrink-0 items-center gap-1.5;
 }
 
 .site-header__topnav-action {
-  @apply inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-gray-600 transition-colors hover:bg-gray-50 hover:text-primary;
+  @apply inline-flex items-center gap-1.5 rounded-[8px] px-2.5 py-1 text-white/90 transition-colors hover:bg-white/10 hover:text-white;
 }
 
 .site-header__topnav-action + .site-header__topnav-action {
@@ -754,7 +767,7 @@
 
   &::before {
     content: '';
-    @apply absolute inset-y-1.5 w-px bg-gray-200;
+    @apply absolute inset-y-1.5 w-px bg-white/20;
     inset-inline-start: -2px;
   }
 }
@@ -766,13 +779,13 @@
 
   .site-header__topnav-action + &::before {
     content: '';
-    @apply absolute inset-y-1.5 w-px bg-gray-200;
+    @apply absolute inset-y-1.5 w-px bg-white/20;
     inset-inline-start: -2px;
   }
 }
 
 .site-header__topnav-contact {
-  @apply inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-gray-600 transition-colors hover:bg-gray-50 hover:text-primary;
+  @apply inline-flex items-center gap-1.5 rounded-[8px] px-2.5 py-1 text-white/80 transition-colors hover:bg-white/10 hover:text-white;
 }
 
 .site-header__topnav-action-label {
@@ -780,16 +793,17 @@
 }
 
 .site-header__topnav-icon {
-  @apply h-4 w-4 shrink-0 text-gray-400;
+  @apply h-4 w-4 shrink-0 text-white/70;
 }
 
 .site-header__topnav-caret {
-  @apply h-3 w-3 shrink-0 text-gray-400;
+  @apply h-3 w-3 shrink-0 text-white/70;
 }
 
 /* `topnav_is_dark` setting: the engine adds `topnav-is-dark` to <body>. */
 body.topnav-is-dark .site-header__topnav {
-  @apply border-gray-300/10 bg-dark text-gray-300;
+  @apply border-gray-300/10 text-gray-300;
+  background-color: var(--top-header-bg, #333e59);
 
   .site-header__topnav-menu a,
   .site-header__topnav-action,
@@ -832,15 +846,21 @@ body.topnav-is-dark .site-header--lite .site-header__bar {
 
 /* --- main row (logo · menu · actions) --------------------------------- */
 @media (min-width: 1024px) {
-  /* burger → out, logo pins to the start, the mega-menu fills the middle. */
+  /* burger → out, logo pins to the start, the capsule-menu fills the middle. */
   .site-header--default .site-header__nav-toggle {
     @apply hidden;
   }
 
+  .site-header--default .site-header__navigation {
+    display: none !important;
+  }
+
   .site-header--default .site-header__bar-inner {
     @apply relative;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
   }
 
   .site-header--default .site-header__brand {
@@ -1094,4 +1114,57 @@ body.topnav-is-dark .site-header--lite .site-header__bar {
 
 .site-header__mainmenu {
   @apply hidden;
+}
+
+/* Generic Store: contact strip, spacious search row, separate category navigation. */
+.site-header__desktop-search,
+.site-header__navigation { display: none; }
+.site-header__search-field {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding-inline: 18px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #f8f8fb;
+  color: #686e7d;
+  text-align: start;
+  transition: border-color .2s;
+  &:hover { border-color: var(--color-primary); }
+}
+@media (min-width: 768px) {
+  .site-header__search-field { display: flex; width: 220px; }
+}
+.site-header :is(button, a):focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; }
+
+/* Rounded icon family and geometry from the current inspiration reference. */
+.site-header__account-trigger { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 9999px; color: inherit; cursor: pointer; }
+.site-header .ref-icon { font-size: 20px; line-height: 1; }
+.site-header__topnav .ref-icon { font-size: 14px; }
+.site-header__account-trigger[hidden] { display: none !important; }
+
+/* Reference typography: contacts */
+.site-header__topnav-contact { font-size: 13px; font-weight: 500; line-height: 1.5; padding-block: 0; }
+.site-header__topnav-contact .ref-icon { font-size: 14px; }
+
+@media (min-width: 1024px) {
+  .site-header--default {
+    .container { max-width: 1320px; }
+    .site-header__brand img { width: auto; height: auto; max-height: 48px; }
+    .site-header__actions { display: flex; align-items: center; gap: 10px; }
+    .site-header__actions .header-action { background: #faf5ee; border: 1px solid rgba(223, 207, 188, 0.5); border-radius: 9999px; width: 42px; height: 42px; color: var(--store-ink, #493039); }
+    .site-header__cart { width: 42px; height: 42px; border-radius: 9999px; background: #fdeee7; color: var(--color-primary); border-color: transparent; }
+    .s-cart-summary-wrapper { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+    .s-cart-summary-total, .s-cart-summary-label { display: none !important; }
+    .s-cart-summary-count { top: -4px !important; bottom: auto; inset-inline-start: auto; inset-inline-end: -4px; transform: none; background: var(--color-primary); color: white; border-radius: 9999px; width: 18px; height: 18px; font-size: 10px; font-weight: bold; border: 2px solid #ffffff; }
+  }
+}
+
+@media (max-width: 767px) {
+  .site-header--default.site-header--home {
+    .site-header__nav-toggle button { display: inline-grid; }
+    .site-header__brand img { max-width: 140px; height: 44px; }
+    .site-header__bar-inner { min-height: 64px; gap: 10px; }
+  }
 }

@@ -1,0 +1,99 @@
+/* Cart Sidebar */
+.gs-side-cart-overlay {
+    background-color: rgba(0, 0, 0, .7);
+}
+.gs-open-cart {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+}
+.gs-cart-contact {        
+    .gs-cart-sub-title {
+        color: $title-color;
+    }
+}
+.gs-side-cart {
+    @include scrollbar;
+    background-color: $bg-fff;
+    .gs-top-contact {
+        .gs-cart-title {
+            h4 {
+                color: $title-color;
+            }
+            .cart-price, .new-price {
+                color: $text-color;
+            }
+            .gs-cart-close {
+                background-color: rgba(224, 78, 78, 0.7);
+                &:after {
+                    content: "";
+                    width: 10px;
+                    height: 10px;
+                    position: absolute;
+                    bottom: 3px;
+                    left: 3px;
+                    border: 2px solid #fff;
+                    border-radius: 50%;
+                }
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+    .gs-cart-box {
+        ul.gs-cart-items {
+            li {
+                border: 1px solid $border-eee;
+                &:hover {
+                    .cart-remove-item {
+                        opacity: 1;
+                    }
+                }
+                img {
+                    border: 1px solid $border-eee;
+                }
+                .qty-plus-minus {
+                    border: 1px solid $border-eee;
+                    background-color: $bg-fff;
+                }
+                .cart-remove-item {
+                    background-color: rgba(0, 0, 0, .7);
+                    color: $text-fff;
+                }
+            }
+        }
+    }
+    .cart-btn {
+        .gs-btn-1 {
+            border: 1px solid $secondary;
+            color: $secondary;
+            &:hover {
+                border: 1px solid $primary;
+                color: $text-fff;
+                background-color: $primary;
+            }
+        }
+        .gs-btn-2 {
+            border: 1px solid $primary;
+            color: $text-fff;
+            background-color: $primary;
+            &:hover {
+                border: 1px solid $secondary;
+                color: $secondary;
+                background-color: transparent;
+            }
+        }
+    }
+}
+.gs-bottom-cart {
+    .cart-sub-total {
+        border-top: 1px solid $border-eee;
+    }
+    table {
+        tr {
+            td {
+                color: $title-color;
+            }
+        }
+    }
+}

@@ -127,7 +127,7 @@ describe('ProductsSlider', () => {
   });
 
   it('renders the title and a display-all link', async () => {
-    const { getByText } = renderWithClient(
+    const { getByRole, getByText } = renderWithClient(
       <ProductsSlider
         data={{
           products: { source: 'related', source_value: 1 },
@@ -136,7 +136,7 @@ describe('ProductsSlider', () => {
         }}
       />
     );
-    expect(getByText('Similar products')).toBeTruthy();
+    expect(getByRole('heading', { name: 'Similar products' })).toBeTruthy();
     await waitFor(() =>
       expect((getByText('View All').closest('a') as HTMLAnchorElement).getAttribute('href')).toBe(
         '/c/all'

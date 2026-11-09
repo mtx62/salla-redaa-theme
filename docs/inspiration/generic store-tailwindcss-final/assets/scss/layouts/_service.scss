@@ -1,0 +1,17 @@
+/* Service */
+.section-service {
+    .service-card {
+        .service-box {
+            background-color: $bg-gray;
+            border: 1px solid $border-eee;
+            h5 {
+                color: $title-color;
+                text-transform: capitalize;
+            }
+            p {
+                color: $text-color;
+                text-transform: capitalize;
+            }
+        }
+    }
+}

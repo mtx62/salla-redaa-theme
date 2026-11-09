@@ -10,32 +10,39 @@ export interface TestimonialItem {
   name?: string;
   text?: string;
   stars?: number;
+  [key: string]: unknown;
 }
 
 function TestimonialCard({ item, index }: { item: TestimonialItem; index: number }) {
+  const avatar = item.avatar;
+  const starsCount = Math.round(Number(item.stars ?? 0));
+
   return (
     <article className="testimonial-card">
       <div className="testimonial-card__head">
         <div className="testimonial-card__person">
-          {item.avatar && (
-            <img
-              className="testimonial-card__avatar"
-              src={item.avatar}
-              alt={item.name?.trim() ? item.name : `testimonial-${index}`}
-              width={44}
-              height={44}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-            />
-          )}
+          {avatar && <img
+            className="testimonial-card__avatar"
+            src={avatar}
+            alt={item.name?.trim() ? item.name : `testimonial-${index}`}
+            width={60}
+            height={60}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />}
           <b className="testimonial-card__name">{item.name}</b>
         </div>
 
-        <span className="testimonial-card__rating">
-          <StarIcon aria-hidden="true" />
-          {Number(item.stars ?? 0).toFixed(1)}
-        </span>
+        <div className="testimonial-card__rating" aria-label={`Rating: ${item.stars ?? 0} stars`}>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <StarIcon
+              key={i}
+              className={i < starsCount ? 'text-[#f4a263] fill-[#f4a263]' : 'text-gray-300'}
+              aria-hidden="true"
+            />
+          ))}
+        </div>
       </div>
 
       <p className="testimonial-card__text">{item.text}</p>
@@ -97,7 +104,13 @@ export function TestimonialsCarousel({ items, title, description }: Testimonials
   const thumbWidth = Math.max(8, thumb * 100);
 
   return (
-    <div className="s-testimonials">
+    <div
+      className="s-testimonials"
+      style={{
+        // Runtime URLs keep these public assets out of Vite's inline critical-CSS transform.
+        backgroundImage: "url('/images/testimonials/bg-1.png'), url('/images/testimonials/bg-2.png')",
+      }}
+    >
       <div className="container s-testimonials__head">
         <h2 className="s-testimonials__title">{title}</h2>
         {description && <p className="s-testimonials__desc">{description}</p>}

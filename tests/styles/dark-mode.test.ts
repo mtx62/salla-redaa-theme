@@ -57,11 +57,11 @@ describe('footer_is_dark (body.footer-is-dark)', () => {
 });
 
 describe('topnav_is_dark (body.topnav-is-dark)', () => {
-  it('darkens the header top bar like the Twig Raed .top-navbar', async () => {
+  it('uses the Generic Store navy token for the header top bar', async () => {
     const root = await compile('header.scss');
 
     const topnav = declarations(root, 'body.topnav-is-dark .site-header__topnav');
-    expect(topnav['background-color']).toContain('rgb(29 31 31'); // dark #1D1F1F
+    expect(topnav['background-color']).toBe('var(--top-header-bg, #333e59)');
     expect(topnav.color).toContain('rgb(209 213 219'); // gray-300
   });
 

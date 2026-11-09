@@ -37,6 +37,7 @@ const CRITICAL_CSS = {
 
 function RootComponent() {
   const ctx = getTwilightContext();
+
   return (
     <html lang={ctx.locale} dir={ctx.dir} suppressHydrationWarning>
       <head>
@@ -46,6 +47,9 @@ function RootComponent() {
         {/* Home and product paint from inline critical CSS; `bootClient` adds the full sheet once
             their first screen has painted. Other routes: the full sheet blocks, as before. */}
         <ThemeStylesheet href={appCssUrl} critical={CRITICAL_CSS} />
+        <link rel="preload" href="/fonts/dubai/Dubai-Regular.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="/fonts/dubai.css" />
+        <link rel="stylesheet" href="/fonts/reference-icons.css" />
         <ThemeHeadContent />
       </head>
       <body suppressHydrationWarning>

@@ -96,9 +96,10 @@ const YOUTUBE_PLAYING = 1;
  * disabled, video removed). Uses the embed's postMessage events (`enablejsapi`):
  * the page says it is listening, and the frame answers with its state.
  */
-function YouTubeBackground({ id }: { id: string }) {
+function YouTubeBackground({ id, onReady }: { id: string; onReady?: () => void }) {
   const ref = useRef<HTMLIFrameElement>(null);
   const [state, setState] = useState<'loading' | 'playing' | 'failed'>('loading');
+  const visible = useRef(true);
 
   useEffect(() => {
     const frame = ref.current;
@@ -120,7 +121,10 @@ function YouTubeBackground({ id }: { id: string }) {
         data.event === 'onStateChange'
           ? data.info
           : (data.info as { playerState?: unknown } | null)?.playerState;
-      if (playerState === YOUTUBE_PLAYING) setState('playing');
+      if (playerState === YOUTUBE_PLAYING) {
+        setState('playing');
+        if (!visible.current) frame.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), 'https://www.youtube-nocookie.com');
+      }
     };
     let timer: number | undefined;
     const send = () => {
@@ -147,6 +151,21 @@ function YouTubeBackground({ id }: { id: string }) {
     };
   }, [id]);
 
+  useEffect(() => {
+    const frame = ref.current;
+    if (!frame || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(([entry]) => {
+      visible.current = entry.isIntersecting;
+      frame.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: entry.isIntersecting ? 'playVideo' : 'pauseVideo', args: [] }), 'https://www.youtube-nocookie.com');
+    }, { threshold: 0.1 });
+    observer.observe(frame);
+    return () => observer.disconnect();
+  }, [id]);
+
+  useEffect(() => {
+    if (state === 'playing') onReady?.();
+  }, [state, onReady]);
+
   if (state === 'failed') return null;
   return (
     <iframe
@@ -171,15 +190,16 @@ function YouTubeBackground({ id }: { id: string }) {
  * {@link useSlideVideos} to play it; a YouTube embed loads lazily and plays
  * muted on its own.
  */
-export function SlideVideo({ url, poster }: { url?: string; poster?: string }) {
+export function SlideVideo({ url, poster, onReady }: { url?: string; poster?: string; onReady?: () => void }) {
   const video = parseSlideVideo(url);
   if (!video) return null;
-  if (video.kind === 'youtube') return <YouTubeBackground id={video.id} />;
+  if (video.kind === 'youtube') return <YouTubeBackground id={video.id} onReady={onReady} />;
   return (
     <video
       className="enhanced-slider__video"
       src={video.src}
       poster={poster}
+      onPlaying={onReady}
       muted
       loop
       playsInline
@@ -191,43 +211,82 @@ export function SlideVideo({ url, poster }: { url?: string; poster?: string }) {
   );
 }
 
-function SlideText({ slide, poster }: { slide: SliderBanner; poster?: boolean }) {
+function GenericHeroSlide({ slide, poster, priority, motionAllowed, onReady, index = 0 }: {
+  slide: SliderBanner;
+  poster?: boolean;
+  priority?: boolean;
+  motionAllowed?: boolean;
+  index?: number;
+  onReady?: () => void;
+}) {
+  const raw = slide as Record<string, unknown>;
+  const fallbackHero = index % 2 === 1 ? '/images/hero/hero-2.png' : '/images/hero/hero-1.png';
+  const heroImage = (slide.image || raw['slides.image'] || fallbackHero) as string;
+  const mobileImage = (slide.mobile_image || raw['slides.mobile_image']) as string | undefined;
+  const title = (slide.title ?? raw['slides.title'] ?? '') as string;
+  const subtitle = (slide.subtitle ?? raw['slides.subtitle'] ?? '') as string;
+  const description = (slide.description || raw['slides.description'] || '') as string;
+  const btnname = (slide.btnname || raw['slides.btnname'] || '') as string;
+  const linkUrl = (slide.url || raw['slides.url'] || slide.link || '') as string;
+  const hasButton = slide.show_button !== false && Boolean(btnname.trim() && linkUrl);
+  const videoUrl = slide.video || (raw['slides.video'] as string | undefined);
+  const isVideo = Boolean(parseSlideVideo(videoUrl));
+  const withoutOverlay = slide.without_overlay ?? raw['slides.without_overlay'];
+
   return (
-    <div className="flex-center container py-16 sm:py-0 home-slider__content relative h-full">
-      <div className="w-4/6 text-center md:w-7/12 lg:w-5/12 text-white">
-        {slide.title && (
-          <h2
-            data-swiper-parallax="-500"
-            className="lg:text-title-size font-bold leading-tight mb-4 last:mb-0"
-          >
-            {slide.title}
-          </h2>
-        )}
-        {(slide.subtitle || slide.description) && (
-          <p data-swiper-parallax="-300" className="line-clamp-2 description">
-            {slide.subtitle || slide.description}
-          </p>
-        )}
-        {/* A button text shows the button; legacy `slider_banner` data can still switch it off. */}
-        {slide.btnname?.trim() && slide.show_button !== false && (
-          <Link
-            to={slide.url || slide.link || '#'}
-            data-swiper-parallax="-100"
-            className="home-slider__cta"
-            // The poster is aria-hidden, so its copy stays out of the tab order. Both link
-            // adapters forward it; BaseLinkProps just doesn't declare it.
-            {...(poster && { tabIndex: -1 })}
-          >
-            {slide.btnname}
-          </Link>
-        )}
+    <div className={`store-hero${isVideo ? ' store-hero--video' : ' store-hero--image'}`}>
+      {isVideo && (
+        <div className="store-hero__background" aria-hidden="true">
+          <picture>
+            {mobileImage && <source media="(max-width: 639px)" srcSet={mobileImage} />}
+            <img onLoad={poster ? undefined : onReady} src={heroImage} alt="" width={1920} height={1080} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : undefined} />
+          </picture>
+          {motionAllowed && !poster && <SlideVideo url={videoUrl} poster={heroImage} onReady={onReady} />}
+        </div>
+      )}
+      {isVideo && <div className="store-hero__shade" aria-hidden="true" />}
+      <div className="container store-hero__inner">
+        <div className="store-hero__copy">
+          {subtitle && <p className="store-hero__eyebrow" style={{ color: slide.subtitle_color }}>{subtitle}</p>}
+          {title && <h2 style={{ color: slide.title_color }}>{title}</h2>}
+          {description && <p className="store-hero__description">{description}</p>}
+          {hasButton && (
+            <Link
+              to={linkUrl}
+              className="home-slider__cta store-hero__cta"
+              {...(poster && { tabIndex: -1 })}
+            >
+              {btnname}
+              <span aria-hidden="true" className="store-hero__arrow">←</span>
+            </Link>
+          )}
+        </div>
+        {!isVideo && <div className="store-hero__visual">
+          <div className="store-hero__media">
+            <picture>
+              {mobileImage && <source media="(max-width: 639px)" srcSet={mobileImage} />}
+              <img
+                onLoad={poster ? undefined : onReady}
+                src={heroImage}
+                alt={title}
+                width={600}
+                height={600}
+                fetchPriority={priority ? 'high' : undefined}
+                loading={priority ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </picture>
+          </div>
+        </div>}
       </div>
+
     </div>
   );
 }
 
 export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSliderProps) {
-  const slides = data.slider_banner || data.slides || [];
+  const rawSlides = data.slider_banner || data.slides || [];
+  const slides = rawSlides;
   const position = data.position ?? 1;
   const hasMultipleSlides = slides.length > 1;
   const inContainer = Boolean(data.in_container);
@@ -248,7 +307,7 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
 
   const root = useRef<HTMLDivElement>(null);
   const motionAllowed = useMotionAllowed();
-  const hasVideo = motionAllowed && slides.some((slide) => parseSlideVideo(slide.video));
+  const hasVideo = motionAllowed && slides.some((slide) => parseSlideVideo(slide.video || slide['slides.video' as keyof SliderBanner]));
   useSlideVideos(root, hasVideo);
 
   if (!slides.length) return null;
@@ -260,7 +319,7 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
       <SallaSlider
         id={`main-slider-${position}`}
         // Swiper's autoplay redraws every frame for its countdown, so a single slide skips it.
-        autoPlay={hasMultipleSlides && data.auto_play !== false}
+        autoPlay={hasMultipleSlides && motionAllowed && data.auto_play !== false}
         sliderConfig={{ lazy: false, watchOverflow: true }}
         showControls={hasMultipleSlides}
         pagination={hasMultipleSlides}
@@ -270,15 +329,8 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
       >
         <div slot="items">
           {slides.map((slide, index) => (
-            // The slide's ratio lives in CSS (home-blocks.scss): taller on phones.
-            <div key={index} className="swiper-slide w-full bg-dark relative">
-              <div
-                style={{ backgroundImage: `url(${slide.image})` }}
-                className={`${slide.without_overlay ? '' : 'overlay-bg'} bg-cover bg-center absolute inset-0`}
-              >
-                {motionAllowed && <SlideVideo url={slide.video} poster={slide.image} />}
-              </div>
-              <SlideText slide={slide} />
+            <div key={index} className="swiper-slide w-full relative">
+              <GenericHeroSlide slide={slide} index={index} priority={Boolean(data.priority && index === 0)} motionAllowed={motionAllowed} onReady={index === 0 && showPoster ? hidePoster : undefined} />
             </div>
           ))}
         </div>
@@ -286,21 +338,7 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
 
       {showPoster && (
         <div className="enhanced-slider__poster" aria-hidden="true">
-          <div className="swiper-slide w-full bg-dark relative">
-            <div
-              className={`${first.without_overlay ? '' : 'overlay-bg'} absolute inset-0 overflow-hidden`}
-            >
-              <img
-                src={first.image}
-                alt=""
-                fetchPriority="high"
-                loading="eager"
-                decoding="async"
-                className="w-full h-full object-cover object-center"
-              />
-            </div>
-            <SlideText slide={first} poster />
-          </div>
+          <GenericHeroSlide slide={first} poster priority />
         </div>
       )}
     </div>

@@ -1,15 +1,15 @@
-import { type ComponentRef, type RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { SallaSlider } from '@salla.sa/twilight-components-react/slider';
 import { SallaSocialShare } from '@salla.sa/twilight-components-react/social-share';
-import { useTwilight } from '@salla.sa/twilight-theme-engine/providers';
+import { useNavigate, useTwilight } from '@salla.sa/twilight-theme-engine/providers';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
-import { useWishlist } from '@salla.sa/twilight-theme-engine/hooks/useWishlist';
 import { Image } from '@salla.sa/twilight-theme-engine/common';
 import { isNativeApp } from '@salla.sa/twilight-theme-engine/native-app';
 import type { Product, ProductImage } from '@salla.sa/twilight-theme-engine/types';
 import { ArrowRightIcon } from '../icons';
 import { useHydrated } from '../../hooks/useHydrated';
 import { useMobileViewport } from '../../hooks/useMobileViewport';
+import { ProductWishlistButton } from './ProductWishlistButton';
 import { ProductMetadata } from './ProductMetadata';
 
 export interface ProductGalleryProps {
@@ -55,10 +55,9 @@ function legacyGalleryMedia(images: ProductImage[]): GalleryMedia[] {
  */
 export function ProductGallery({ product }: ProductGalleryProps) {
   const { t } = useTranslation();
-  const wishlist = useWishlist();
+  const navigate = useNavigate();
   const { theme } = useTwilight();
   const sliderId = `details-slider-${product.id}`;
-  const sliderRef = useRef<ComponentRef<typeof SallaSlider>>(null);
   const objectFit = theme.settings.slider_background_size ?? 'cover';
   const hydrated = useHydrated();
   const isMobile = useMobileViewport();
@@ -83,17 +82,6 @@ export function ProductGallery({ product }: ProductGalleryProps) {
       active = false;
     };
   }, [sliderReady, product.id]);
-
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => {
-      const el = sliderRef.current;
-      if (!el?.parentElement) return;
-      const { parentElement, nextSibling } = el;
-      parentElement.removeChild(el);
-      parentElement.insertBefore(el, nextSibling);
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [sliderId]);
 
   // The product-details API only returns `image` (singular).
   // Fall back so the main image always renders even without the full gallery array.
@@ -136,7 +124,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
           className="product-gallery__bar-btn"
           onClick={() => {
             if (window.history.length > 1) window.history.back();
-            else window.location.assign('/');
+            else navigate('/');
           }}
           aria-label={t('blocks.header.back', 'Back')}
         >
@@ -145,15 +133,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
         {/* Waits for the slider itself (`sliderReady`, not just `hydrated`) so
             it doesn't slide in while the images underneath are still loading. */}
         <div className={`product-gallery__bar-actions${sliderReady ? ' is-visible' : ''}`}>
-          <button
-            type="button"
-            className={`product-gallery__bar-btn btn--wishlist ${wishlist.has(Number(product.id)) ? 'is-added' : 'not-added'}`}
-            data-id={product.id}
-            onClick={() => window.salla?.wishlist?.toggle?.(product.id)}
-            aria-label={t('pages.products.add_to_wishlist', 'Add to wishlist')}
-          >
-            <i className="sicon-heart" aria-hidden="true" />
-          </button>
+          <ProductWishlistButton productId={Number(product.id)} gallery />
           <SallaSocialShare
             className="product-gallery__bar-btn"
             aria-label={t('blocks.header.share', 'Share')}
@@ -162,7 +142,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
       </div>
 
       <SallaSlider
-        ref={sliderRef}
+        key={sliderId}
         id={sliderId}
         className="details-slider rounded image-slider"
         type="thumbs"

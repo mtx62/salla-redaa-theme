@@ -1,0 +1,60 @@
+/*-----------------------------------------------------------------------------------
+
+Item Name: Generic Store.
+Author: Maraviya Infotech
+Version: 1
+Copyright 2024
+
+-----------------------------------------------------------------------------------*/
+
+/*---------------------------------------------------------------------------------
+    Included CSS INDEX
+-----------------------------------------------------------------------------------
+
+01. Typography
+
+02. Utilities
+    - Mixing
+    - Variables
+
+03. components
+    - Header
+    - Footer
+    - Common
+    - Cart Sidebar
+    - Quick view
+
+04. Layout 
+    - Product Page
+
+05. Pages 
+    - Hero
+    - Product
+    - Testimonials
+    - Service
+
+-----------------------------------------------------------------------------------*/
+
+/* Typography ( Import Typography ) */
+@import "base/_typography";
+
+/* Utilities ( Import Utilities ) */
+@import "utilities/_mixing";
+@import "utilities/_variables";
+
+/* components ( Import components ) */
+@import "components/_common";
+@import "components/_header";
+@import "components/_footer";
+@import "components/_cart-sidebar";
+@import "components/_category-sidebar";
+@import "components/_quickview";
+
+/* Layouts ( Import Layouts ) */
+@import "layouts/_hero";
+@import "layouts/_product";
+@import "layouts/_testimonials";
+@import "layouts/_service";
+
+/* Pages ( Import Pages ) */
+@import "pages/_product-page";

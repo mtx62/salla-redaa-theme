@@ -3,10 +3,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 
 // Only the module under test, not the whole barrel and everything it re-exports.
-vi.mock('../../../app/components/product', async () => ({
-  ProductCard: (await vi.importActual<typeof import('../../../app/components/product/ProductCard')>(
-    '../../../app/components/product/ProductCard'
-  )).ProductCard,
+vi.mock('../../../app/components/product', () => ({
+  ProductCard: ({ product, layout = 'vertical' }: { product: { name: string }; layout?: string }) => <div data-testid="product-card" data-layout={layout}>{product.name}</div>,
 }));
 
 vi.mock('@salla.sa/twilight-theme-engine/api/product', () => ({

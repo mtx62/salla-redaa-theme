@@ -124,7 +124,7 @@ export function ProductPage({ product: initialProduct, page }: ProductPageProps)
             <HookSlot name="product:details.start" />
             {/* Loader product: like Twig, the header price stays the unit price; only the SKU and barcode are live */}
             <ProductDetails
-              product={initialProduct}
+              product={product}
               sku={product.sku}
               barcode={product.barcode}
               showTags={theme.settings.show_tags}

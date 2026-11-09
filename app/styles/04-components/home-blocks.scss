@@ -10,11 +10,15 @@
     }
 
     h2 {
-      @apply text-lg font-bold relative leading-[1.2];
+      @apply text-xl md:text-2xl font-bold relative leading-[1.2] text-[#3d4750];
+
+      span {
+        @apply text-primary;
+      }
     }
 
     p {
-      @apply text-sm opacity-60 mt-2 line-clamp-1 sm:line-clamp-2 rtl:md:pl-16 ltr:md:pr-16;
+      @apply text-sm text-[#686e7d] mt-2 line-clamp-1 sm:line-clamp-2 rtl:md:pl-16 ltr:md:pr-16;
     }
 
     &-nav {
@@ -120,7 +124,9 @@
   position: absolute;
   inset-inline: 0;
   top: 0;
-  z-index: 3; /* takes taps until handover: its CTA works, the controls under it stay inert */
+  z-index: 3;
+  pointer-events: none; /* Never block the slider or page scrolling during handover. */
+  a { pointer-events: auto; }
 }
 
 /* Banner Block */
@@ -789,26 +795,26 @@
 
   &--features {
     &__item {
-      @apply cursor-pointer bg-white transition-shadow duration-500 shadow-[0_4px_16px_rgba(43,45,52,0.06)] hover:shadow-[0_6px_20px_rgba(43,45,52,0.1)] rounded flex-grow flex flex-col items-center px-4 py-8 md:px-8 text-center;
+      @apply cursor-pointer bg-[#f8f8fb] border border-[#eee] transition-all duration-300 hover:shadow-md hover:border-[#6c7fd8]/30 rounded-[10px] flex-grow flex flex-col items-center px-4 py-8 md:px-8 text-center;
 
       &:first-child {
         @apply col-span-2 md:col-span-1;
       }
 
       .feature-icon {
-        @apply mb-3 bg-primary w-16 h-16 rounded-full flex items-center justify-center overflow-hidden;
+        @apply mb-3 bg-primary w-14 h-14 rounded-full flex items-center justify-center overflow-hidden shadow-sm;
 
         i {
-          @apply text-primary-reverse text-3xl;
+          @apply text-white text-2xl;
         }
       }
 
       h2 {
-        @apply font-bold text-sm text-gray-800 mb-1;
+        @apply font-bold text-base text-[#3d4750] mb-1;
       }
 
       p {
-        @apply text-sm text-gray-500;
+        @apply text-sm text-[#686e7d];
       }
 
       &:hover {
@@ -835,8 +841,8 @@
   Fixed Products Grid
 */
 .s-products-list-wrapper.s-products-list-vertical-cards {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
 
   @media (max-width: 767px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -867,9 +873,8 @@
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 10px;
-  padding-left: 10px;
-  max-width: 1280px;
+  padding-inline: 12px;
+  max-width: 1320px;
 }
 
 .s-block--products-slider {

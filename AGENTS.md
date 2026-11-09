@@ -3,6 +3,13 @@
 Salla React storefront theme: TanStack Start (server-rendered at the edge) on
 `@salla.sa/twilight-theme-engine`. You customize the engine; you do not fork it.
 
+> [!IMPORTANT]
+> **Project Docs & Handover Guide for AI Agents:**
+> 1. [docs/ARCHITECTURE.md](file:///Users/abdulaziznoor/Developments/Salla/salla-react-theme/docs/ARCHITECTURE.md) - Full architecture, directory layout, commands, and rules.
+> 2. [docs/DESIGN_SYSTEM.md](file:///Users/abdulaziznoor/Developments/Salla/salla-react-theme/docs/DESIGN_SYSTEM.md) - Design tokens, color palette (#6c7fd8, #3d4750, #333e59), Dubai font, 10px radius, component styling inspired by Generic Store.
+> 3. [docs/CHANGELOG.md](file:///Users/abdulaziznoor/Developments/Salla/salla-react-theme/docs/CHANGELOG.md) - Running task progress and log of modifications. Always update this as you build!
+> 4. [docs/inspiration/generic store-tailwindcss-final](file:///Users/abdulaziznoor/Developments/Salla/salla-react-theme/docs/inspiration/generic store-tailwindcss-final) - The source inspiration project.
+
 ## Read the docs before writing code
 
 Do not write an engine API from memory. Look it up first:
@@ -101,3 +108,7 @@ pnpm check:manifest   # after editing twilight.json: duplicate ids, missing opti
 ```
 
 Do not start `pnpm dev` yourself; ask the user to run it. Typecheck needs `app/routeTree.gen.ts`, which `pnpm build` or `pnpm dev` generates.
+
+## Protected UI decisions
+
+Read [docs/UI_DECISIONS.md](docs/UI_DECISIONS.md) before changing header, menus or dialogs. The user explicitly removed category selection from the header search: **do not restore `.site-header__search-category` or an equivalent category selector inside search**. Categories belong to the navigation drawer trigger. Keep account/cart icon geometry and submenu/dialog styling consistent with the current design tokens. Historical inspiration markup and changelog entries do not override these decisions.

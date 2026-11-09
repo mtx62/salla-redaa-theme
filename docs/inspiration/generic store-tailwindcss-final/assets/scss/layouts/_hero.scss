@@ -1,0 +1,416 @@
+/* Hero */
+.section-hero {
+    position: relative;
+    background-color: $bg-gray;
+    overflow: hidden;
+    &:after{
+        content: "";
+    }
+    .gs-scroll-Page {
+        .scroll-bar {
+            &:after {
+                @include ease3;
+                content: "";
+                height: 80px;
+                width: 1px;
+                position: absolute;
+                right: -50px;
+                bottom: -33px;
+                background-color: $bg-000;
+                transform: rotate(90deg);
+            }
+        }
+    }
+    .shape {
+        position: absolute;
+        opacity: .7;
+    }
+    .shape-1 {
+        top: -50px;
+        left: -50px;
+        animation: rotaleLeaf 3s linear infinite alternate;
+    }
+    .shape-2 {
+        bottom: -100px;
+        left: -50px;
+        animation: rotaleLeaf 3s linear infinite alternate;
+    }    
+    .shape-3 {
+        bottom: -100px;
+        left: 30%;
+        animation: moveLeaf 2s linear infinite alternate;
+    }
+    .shape-4 {
+        top: 100px;
+        right: -50px;
+        animation: rotaleLeaf 4s linear infinite alternate;
+    }
+    @keyframes rotaleLeaf {
+        from {
+          transform:rotate(5deg);
+        }
+        to {
+          transform:rotate(-5deg);
+        }
+    }
+    @keyframes moveLeaf {
+        from {
+          transform:translateX(5px);
+        }
+        to {
+            transform:translateX(-5px);
+        }
+    }
+}
+.swiper-slide-active {
+    .hero-contact {
+        > *:nth-child(1) {
+            -webkit-animation-duration: 3s;
+            animation-duration: 3s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            -webkit-animation-name: fadeInUp;
+            animation-name: fadeInUp;
+        }
+        > *:nth-child(2) {
+            -webkit-animation-duration: 2s;
+            animation-duration: 2s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            -webkit-animation-name: fadeInUp;
+            animation-name: fadeInUp;
+        }
+        > *:nth-child(3) {
+            -webkit-animation-duration: 3s;
+            animation-duration: 3s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            -webkit-animation-name: fadeInUp;
+            animation-name: fadeInUp;
+        }
+    }
+}
+.hero-contact {
+    * {
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+        -webkit-animation-name: fadeOutDown;
+        animation-name: fadeOutDown;
+    }
+    &:nth-child(1) {
+        webkit-animation-name: fadeInUp;
+        -webkit-animation-name: fadeInUp;
+        animation-name: fadeInUp;
+        -webkit-animation-delay: 3s;
+        animation-delay: 3s;
+    }
+    &:nth-child(2) {
+        webkit-animation-name: fadeInUp;
+        -webkit-animation-name: fadeInUp;
+        animation-name: fadeInUp;
+        -webkit-animation-delay: 2s;
+        animation-delay: 2s;
+    }
+    &:nth-child(3) {
+        webkit-animation-name: fadeInUp;
+        -webkit-animation-name: fadeInUp;
+        animation-name: fadeInUp;
+        -webkit-animation-delay: 3s;
+        animation-delay: 3s;
+    }
+    p {
+        color: $primary;
+    }
+    h1 {
+        color: $secondary;
+    }
+    a {
+        background-color: transparent;
+        border: 1px solid $secondary;
+        color: $secondary;
+        &:hover {
+            background-color: $primary;
+            border: 1px solid $primary;
+            color: $text-fff;
+        }
+    }
+}
+
+.hero-slider {
+    .swiper-buttons {
+        .swiper-button-next, .swiper-button-prev {
+            &:after {
+                color: $secondary;
+            }
+        }
+        .swiper-button-next {
+            &:after {
+                left: auto;
+                right: -10%;
+            }
+        }
+    }
+    .swiper-pagination {
+        position: absolute;
+        text-align: center;
+        bottom: 20px;
+        z-index: 1;
+    }
+    .swiper-pagination-bullet {
+        width: 15px;
+        height: 15px;
+        margin: 0 2px !important;
+        display: inline-block;
+        border: 1px solid $secondary;
+        border-radius: 20px;
+        opacity: 1;
+        background-color: transparent;
+        box-shadow: none;
+        transition: all 0.3s ease 0s;
+    }
+    .swiper-pagination-bullet.swiper-pagination-bullet-active {
+        background-color: #4b5966;
+        width: 30px;
+    }
+    .swiper-button-next, .swiper-button-prev {
+        z-index: 1;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate3d(0, 0, 1, 0deg);
+    }
+    25% {
+        transform: rotate3d(0, 0, 1, 90deg);
+    }
+    50% {
+        transform: rotate3d(0, 0, 1, 180deg);
+    }
+    75% {
+        transform: rotate3d(0, 0, 1, 270deg);
+    }
+    100% {
+        transform: rotate3d(0, 0, 1, 360deg);
+    }
+}
+
+.hero-image {
+    &:after{
+        content: "";
+        border: 1px dashed $secondary;
+        height: 640px;
+        width: 640px;
+        border-radius: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        animation: rotate 50s normal linear infinite;
+    }
+    &:before{
+        content: "";
+        background-color: #e0e3eb;
+        height: 600px;
+        width: 600px;
+        border-radius: 100%;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: -1;
+    }
+    svg {
+        path {
+            fill: $bg-fff;
+            filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.015));
+        }
+    }
+}
+
+/* Responsive css */
+@media only screen and (max-width: 1600px) {
+    .section-hero {
+        .shape-1{
+            width: 200px;
+        }
+        .shape-2{
+            width: 150px;
+        }
+        .shape-3{
+            width: 200px;
+        }
+        .shape-4{
+            width: 150px;
+        }
+    }
+}
+@media only screen and (max-width: 1399px) {
+    .hero-image {
+        &:before {
+            height: 500px;
+            width: 500px;        
+        }
+        &:after{
+            height: 540px;
+            width: 540px;
+        }
+    }
+}
+
+@media only screen and (max-width: 1199px) {
+    .hero-image {
+        &:before {
+            height: 400px;
+            width: 400px;        
+        }
+        &:after{
+            height: 440px;
+            width: 440px;
+        }
+    }
+    .hero-contact {
+        h1,
+        h2 {
+            span {
+                &:after {
+                    height: 60px;
+                    width: 40px;
+                    top: -35px;
+                    right: -35px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .section-hero {
+        .shape-3{
+            left: auto;
+            right: 100px;
+        }
+    }
+    .hero-slider {
+        .swiper-buttons {
+            .swiper-button-prev, .swiper-button-next{
+                &:after {
+                    font-size: 30px;
+                }
+            }
+        }
+    }
+    .hero-image {
+        &:before {
+            margin: auto;
+            left: 0;
+            right: 0;       
+        }
+        &:after{
+            margin: auto;
+            left: 0;
+            right: 0;
+        }
+    }
+    .hero-contact {
+        h1,
+        h2 {
+            span {
+                &:after {
+                    height: 40px;
+                    width: 28px;
+                    top: -25px;
+                    right: -25px;
+                }
+            }
+        }
+    }
+    .hero-slider {
+        .swiper-pagination {
+            display: none;
+            margin: 0 0 0 -1px;
+            bottom: -8px;
+            text-align: right;
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .section-hero {
+        .shape-1{
+            width: 150px;
+            top: 0;
+        }
+        .shape-2{
+            width: 130px;
+        }
+        .shape-3{
+            width: 150px;
+        }
+        .shape-4{
+            width: 130px;
+        }
+    }
+    .hero-image {
+        &:before {
+            height: 400px;
+            width: 400px;        
+        }
+        &:after{
+            height: 440px;
+            width: 440px;
+        }
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .section-hero {
+        .shape-1{
+            width: 100px;
+            top: 0;
+            left: -17px;
+            opacity: 1; 
+        }
+        .shape-2{
+            width: 100px;
+            bottom: -35px;
+            left: -17px;
+            opacity: 1; 
+        }
+        .shape-3{
+            width: 100px;
+            right: 50px;
+            bottom: -20px;
+            opacity: 1; 
+        }
+        .shape-4{
+            width: 100px;
+            right: -25px;
+            opacity: 1; 
+        }
+    }
+    .hero-slider {
+        .swiper-pagination {
+            bottom: 0;
+        }
+    }
+    .hero-image{
+        &:before {
+            height: 200px;
+            width: 200px;
+        }
+        &:after {
+            height: 240px;
+            width: 240px;
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .section-hero {
+        .shape-3{
+            right: 30px;
+        }
+    }
+}

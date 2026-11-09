@@ -82,5 +82,30 @@
   "blocks.order_options.subtitle": "اختر من الخيارات المتاحة.",
   "blocks.order_options.continue": "متابعة",
   "blocks.order_options.total": "الإجمالي",
-  "blocks.order_options.required_message": "يرجى تعبئة الحقول المطلوبة"
+  "blocks.order_options.required_message": "يرجى تعبئة الحقول المطلوبة",
+  "blocks.card.quick_view": "معاينة سريعة",
+  "blocks.card.compare": "مقارنة المنتجات",
+  "blocks.card.remove_compare": "إزالة من المقارنة",
+  "blocks.card.compare_limit": "يمكن مقارنة أربعة منتجات كحد أقصى",
+  "blocks.card.price": "السعر",
+  "blocks.card.rating": "التقييم",
+  "blocks.card.no_reviews": "لا توجد تقييمات بعد",
+  "blocks.card.availability": "التوفر",
+  "blocks.card.details": "التفاصيل",
+  "blocks.card.choose_options": "اختر الخيارات",
+  "blocks.card.notify": "أعلمني عند التوفر",
+  "blocks.card.load_error": "تعذر تحميل خيارات المنتج",
+  "blocks.card.retry": "أعد المحاولة",
+  "blocks.card.loading": "جارٍ تحميل المنتج…",
+  "blocks.card.full_details": "عرض التفاصيل كاملة",
+  "pages": {
+    "wishlist": {
+      "toggle": "إضافة أو إزالة من المفضلة"
+    }
+  },
+  "blocks.product.gift_toggle": "أرسل المنتج كهدية",
+  "blocks.product.reviews_title": "تقييمات وآراء العملاء",
+  "blocks.product.reviews_intro": "اطّلع على تجارب العملاء، ورتّب التعليقات بما يناسبك.",
+  "blocks.header.announcement": "شحن وتوصيل سريع لكافة المناطق | منتجات أصلية ومضمونة 100%",
+  "blocks.footer.scroll_to_top": "العودة للأعلى"
 }

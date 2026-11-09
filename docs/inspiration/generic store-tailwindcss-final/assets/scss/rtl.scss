@@ -1,0 +1,358 @@
+/**  RTL Mode  **/
+@import "utilities/_variables";
+@import "utilities/_mixing";
+
+html * {
+    direction: rtl;
+}
+.slick-slider *,
+.owl-carousel * {
+    direction: ltr;
+}
+
+.gs-header {
+    .top-header {
+        .inner-top-header {
+            a {
+                padding-left: 15px;
+                padding-right: 0;
+                i {
+                    padding-left: 8px;
+                    padding-right: 0;
+                }
+            }
+            ul {
+                li {
+                    a {
+                        padding: 0 10px;
+                    }
+                }
+            }
+        }
+    }
+    .bottom-header {
+        .header-search {
+            form {
+                input {
+                    padding: 10px 160px 10px 10px;
+                }
+                button {
+                    left: 0;
+                    right: auto;
+                }
+            }
+            .gs-btn-group-form {
+                .inner-select {
+                    left: auto;
+                    right: 0;
+                    border-right: 0;
+                    border : 1px solid #eee;
+                    border-radius: 0 10px 10px 0;
+                }
+            }
+        }
+        .search-box {
+            margin-left: auto;
+            margin-right: 30px;
+        }
+        .custom-select {
+            .custom-select {
+                &:after {
+                    left: 12px;
+                    right: auto;
+                }
+                .select-options {
+                    right: -20px !important;
+                    left: auto !important;
+                }
+            }
+        }
+    }
+}
+.header-search {
+    .gs-btn-group-form {
+        .inner-select {
+            .custom-select {
+                .select-options {
+                    right: -20px;
+                    left: auto;
+                }
+            }
+        }
+    }
+}
+.custom-dropdown {
+    .gs-dropdown-toggle{
+        &:after {
+            right: auto;
+            left: 10px;
+        }
+    }
+    ul {
+        li {
+            a {
+                text-align: right;
+            }
+        }
+    }
+}
+.gs-inner-menu-desk {
+    .gs-header-btn {
+        margin-right: 0;
+        margin-left: 30px;
+    }
+}
+.gs-main-menu-desk {
+    .gs-inner-menu-desk {
+        .gs-main-menu {
+            ul.navbar-nav {
+                .gs-mega-dropdown {
+                    .gs-mega-item {
+                        &:after {
+                            left: 0;
+                            right: auto;
+                        }
+                    }
+                    .gs-mega-menu {
+                        right: 193px;
+                        left: auto;
+                    }
+                }
+                .gs-dropdown {
+                    .gs-dropdown-menu {
+                        text-align: right;
+                        left: auto;
+                        right: 0;
+                    }
+                    .gs-dropdown-item {
+                        &:before {
+                            @include ease3;
+                            font-family: uicons-regular-rounded;
+                            content: "\f427";
+                            font-size: 18px;
+                            position: relative;
+                            line-height: 1;
+                            top: 5px;
+                            right: auto;
+                            left: 0;
+                            font-weight: 500;
+                            color: #3d4750;
+                        }
+                        &:after {
+                            display: none;
+                        }
+                    }
+                }
+                .gs-main-dropdown {
+                    .gs-dropdown-item {
+                        &:before {
+                            @include ease3;
+                            font-family: uicons-regular-rounded;
+                            content: "\f427";
+                            font-size: 18px;
+                            position: relative;
+                            line-height: 1;
+                            top: 5px;
+                            right: auto;
+                            left: 0;
+                            font-weight: 500;
+                            color: #3d4750;
+                        }
+                        &:after {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.gs-main-menu {
+    ul {
+        li.nav-item {
+            margin-right: 35px;
+        }
+    }
+}
+
+.bottom-header {
+    .inner-bottom-header {
+        .gs-header-buttons {
+            .gs-acc-drop{
+                .gs-dropdown-menu {
+                    text-align: right;
+                }
+            }
+            .gs-header-btn {
+                margin-left: 0;
+                margin-right: 30px;
+                .gs-btn-desc {
+                    margin-left: 0;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}
+.gs-side-cart {
+    .gs-top-contact {
+        .gs-cart-title {
+            .gs-cart-close {
+                left: 0;
+                right: auto;
+            }
+        }
+    }
+    .gs-cart-contact {
+        padding-left: 0;
+        padding-right: 15px;
+    }
+}
+.gs-side-category {
+    .gs-top-contact {
+        .gs-category-title {
+            .gs-category-close {
+                left: 0;
+                right: auto;
+            }
+        }
+    }
+}
+.gs-deal-card {
+    .gs-pro-contact {
+        text-align: right;
+        .gs-pro-subtitle {
+            direction: rtl;
+        }
+        .gs-price, .gs-pro-option {
+            direction: rtl;
+        }
+        .gs-pro-color {
+            ul {
+                li {
+                    margin-left: 5px;
+                    margin-right: 0 !important;
+                }
+            }
+        }
+    }
+}
+.gs-testimonials-card {
+    .testimonials-img {
+        direction: rtl;
+    }
+    text-align: right;
+}
+.gs-app-store {
+    direction: ltr;
+    justify-content: end;
+}
+.footer-res-social {
+    li {
+        margin-right: 0;
+        margin-left: .5rem;
+    }
+}
+.gs-breadcrumb-list {
+    text-align: left;
+}
+.gs-single-rating {
+    display: flex;
+    justify-content: flex-start;
+    .gs-pro-rating {
+        margin-right: 0;
+        margin-left: 10px;
+    }
+}
+.gs-single-pro-contact {
+    .gs-single-list {
+        ul {
+            li {
+                span {
+                    padding-left: 20px;
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+}
+.gs-inner-tabs {
+    ul {
+        padding-left: 0;
+        padding-right: 20px;
+    }
+}
+
+/* Responsive */
+@media screen and (max-width: 991px) {
+    .gs-header {
+        .bottom-header {
+            .gs-sidebar-toggle {
+                margin-right: 20px;
+                margin-left: 0;
+            }
+            .header-search {
+                form {
+                    margin-left: 0;
+                    margin-right: 20px;
+                    input {
+                        padding: 10px;
+                    }
+                }
+            }
+        }
+    }
+    .gs-heading-res {
+        text-align: left;
+    }
+    .gs-toggle-menu.hidden {
+        margin-right: 20px;
+        margin-left: 0;
+    }
+    .bottom-header {
+        .inner-bottom-header {
+            .gs-header-buttons {
+                .gs-header-btn {
+                    margin-right: 20px;
+                    &:first-child {
+                        margin: 0 !important;
+                    }
+                }
+            }
+        }
+        .search-box {
+            margin: 0 !important;
+        }
+    }
+    .gs-mobile-menu {
+        .gs-menu-inner {
+            .gs-menu-content {
+                ul {
+                    li {
+                        .menu-toggle{
+                            &:before {
+                                margin-left: 010px;
+                                margin-right: auto;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.gs-modal {
+    .gs-quickview-cart {
+        margin-left: 0;
+        margin-right: 4px;
+    }
+}
+@media screen and (max-width: 767px) {
+    .gs-header {
+        .bottom-header {
+            .header-search form {
+                margin: 0;
+            }
+        }
+    }
+}

@@ -39,7 +39,8 @@ describe('CustomTestimonials', () => {
   it('renders the rating as "N.0" with the star icon', () => {
     const { container } = render(<CustomTestimonials data={{ items }} />);
     const rating = container.querySelector('.testimonial-card__rating');
-    expect(rating?.textContent?.trim()).toBe('5.0');
+    expect(rating?.getAttribute('aria-label')).toBe('Rating: 5 stars');
+    expect(rating?.querySelectorAll('svg')).toHaveLength(5);
     expect(rating?.querySelector('svg')).toBeTruthy();
   });
 

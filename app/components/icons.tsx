@@ -349,3 +349,21 @@ export const CrownIcon = (props: SVGProps<SVGSVGElement>) => (
     <path d="M5 21H19" {...stroke} />
   </svg>
 );
+
+export const ClockIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...base} {...props}>
+    <circle cx="12" cy="12" r="10" {...stroke} />
+    <path d="M12 6V12L16 14" {...stroke} />
+  </svg>
+);
+
+export const SupportIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...base} {...props}>
+    <path d="M3 18v-6a9 9 0 0 1 18 0v6" {...stroke} />
+    <path
+      d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
+      {...stroke}
+    />
+  </svg>
+);
+

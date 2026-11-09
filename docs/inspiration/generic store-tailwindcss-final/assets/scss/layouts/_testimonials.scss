@@ -1,0 +1,36 @@
+/* Testimonials */
+.section-testimonials {
+    position: relative;
+    background-color: $bg-gray;
+    border-top: 1px solid $border-eee;
+    border-bottom: 1px solid $border-eee;
+    &:after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-image: url("../img/testimonials/bg-1.png");
+        background-repeat: no-repeat;
+    }
+    &:before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-image: url("../img/testimonials/bg-2.png");
+        background-repeat: no-repeat;
+        background-position: right bottom;
+    }
+    .testimonials-contact {
+        h5 {
+            color: $secondary;
+        }
+        span, p {
+            color: $text-777;
+        }
+    }
+}

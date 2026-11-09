@@ -3,7 +3,6 @@ import { HookSlot } from '@salla.sa/twilight-theme-engine/hooks';
 import { HookName } from '@salla.sa/twilight-theme-engine/types/hooks';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
 import { getActiveCurrency } from '@salla.sa/twilight-theme-engine/api/client';
-import { useWishlist } from '@salla.sa/twilight-theme-engine/hooks/useWishlist';
 import { CurrencySymbol, Link, Image } from '@salla.sa/twilight-theme-engine/common';
 import { formatSallaPlural } from '@salla.sa/twilight-theme-engine/utils';
 import type { Product } from '@salla.sa/twilight-theme-engine/types';
@@ -13,7 +12,7 @@ import { SallaInstallment } from '@salla.sa/twilight-components-react/installmen
 import { useHydrated } from '../../hooks/useHydrated';
 import { useMobileViewport } from '../../hooks/useMobileViewport';
 import { ProductMetadata } from './ProductMetadata';
-import { WishlistHeartButton } from './WishlistHeartButton';
+import { ProductWishlistButton } from './ProductWishlistButton';
 
 interface ProductDetailsProps {
   product: Product;
@@ -79,11 +78,11 @@ export function ProductDetails({
         <div className="product-details__title-actions flex shrink-0">
           <SallaSocialShare className="inline-flex" aria-label="social share" />
 
-          <TitleWishlistButton productId={Number(product.id)} />
+          <ProductWishlistButton productId={Number(product.id)} />
         </div>
       </div>
 
-      {product.rating && (
+      {product.rating && Number(product.rating.count) > 0 && Number(product.rating.stars) > 0 && (
         <div className="product-details__rating">
           <SallaRatingStars value={product.rating.stars} reviews={product.rating.count} />
         </div>
@@ -152,8 +151,8 @@ export function ProductDetails({
             </span>
             <div className="mt-1 sm:mt-0 sm:col-span-2 text-end">
               <div className="flex rtl:space-x-reverse space-x-3">
-                <a
-                  href="#!"
+                <button
+                  type="button"
                   onClick={() =>
                     window.salla?.event?.dispatch('scopes::open', {
                       mode: 'availability',
@@ -164,7 +163,7 @@ export function ProductDetails({
                 >
                   <span>{t('pages.products.select_branch')}</span>
                   <span className="sicon-keyboard_arrow_left mr-2 transition-transform group-hover:-translate-x-1"></span>
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -184,27 +183,13 @@ export function ProductDetails({
   );
 }
 
-function TitleWishlistButton({ productId }: { productId: number }) {
-  const { t } = useTranslation();
-  const wishlist = useWishlist();
-
-  return (
-    <WishlistHeartButton
-      productId={productId}
-      className={`btn--wishlist animated hidden sm:inline-flex ${wishlist.has(productId) ? 'is-added' : 'not-added'}`}
-      onClick={() => window.salla?.wishlist.toggle(productId)}
-      ariaLabel={t('pages.products.add_to_wishlist', 'Add to wishlist')}
-    />
-  );
-}
-
 function ProductPrice({ product }: { product: Product }) {
   const { t } = useTranslation();
   // The API converts the amounts but still labels them in the store's own currency.
   const priceCurrency = getActiveCurrency(product.currency);
 
   return (
-    <div className="flex whitespace-nowrap gap-4 items-center mb-2.5">
+    <div className="store-product__price flex whitespace-nowrap gap-4 items-center mb-2.5">
       <div
         className={`${product.is_on_sale ? '' : 'hidden'} space-x-2 rtl:space-x-reverse whitespace-nowrap`}
       >

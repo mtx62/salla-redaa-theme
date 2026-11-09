@@ -1,7 +1,16 @@
+import { forwardRef, useImperativeHandle } from 'react';
 import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
 import { render, waitFor, fireEvent } from '@testing-library/react';
 import type { Product } from '@salla.sa/twilight-theme-engine/types';
 import { AddToCartForm } from '../../../app/components/product/AddToCartForm';
+
+const optionMethods = vi.hoisted(() => ({ setOptionsData: vi.fn().mockResolvedValue(undefined), seedSelectedOptions: vi.fn().mockResolvedValue(undefined) }));
+vi.mock('@salla.sa/twilight-components-react/product-options', () => ({
+  SallaProductOptionsCore: forwardRef((_props, ref) => {
+    useImperativeHandle(ref, () => optionMethods, []);
+    return <salla-product-options />;
+  }),
+}));
 
 vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
   useTranslation: () => ({
@@ -212,5 +221,21 @@ describe('AddToCartForm sticky bar when sold out', () => {
   it('leaves an in-stock product as it was', () => {
     const { container } = render(<AddToCartForm product={makeProduct()} />);
     expect(bar(container).classList.contains('sticky-product-bar--sold-out')).toBe(false);
+  });
+});
+
+
+describe('AddToCartForm option defaults', () => {
+  it('seeds after mounting and isolates mutable widget data from the product cache', async () => {
+    optionMethods.setOptionsData.mockClear();
+    optionMethods.seedSelectedOptions.mockClear();
+    (window as unknown as { salla: unknown }).salla = { onReady: () => Promise.resolve(), config: { set: vi.fn() } };
+    const options = [{ id: 1, name: 'Color', type: 'color', details: [{ id: 11, name: 'Blue', is_selected: true }] }] as unknown as Product['options'];
+    render(<AddToCartForm product={makeProduct({ options })} />);
+    await waitFor(() => expect(optionMethods.seedSelectedOptions).toHaveBeenCalled());
+    const passed = optionMethods.setOptionsData.mock.calls[0][0];
+    expect(passed).toEqual(options);
+    expect(passed).not.toBe(options);
+    expect(optionMethods.setOptionsData.mock.invocationCallOrder[0]).toBeLessThan(optionMethods.seedSelectedOptions.mock.invocationCallOrder[0]);
   });
 });

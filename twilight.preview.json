@@ -1,0 +1,29 @@
+{
+  "enabled": true,
+  "settings": {
+    "theme_color_primary": "#c84b20",
+    "theme_color_secondary": "#493039",
+    "theme_top_header_bg": "#f4e8d6",
+    "header_custom_logo": "",
+    "header_layout": "default",
+    "enable_more_menu": true,
+    "header_show_store_info": true,
+    "header_store_info_home_only": true,
+    "header_is_sticky": false,
+    "topnav_is_dark": false,
+    "important_links": true,
+    "squar_photo_bg_image_size": "contain",
+    "vertical_fixed_products": false,
+    "is_more_button_enabled": false,
+    "footer_is_dark": false,
+    "product_show_breadcrumbs": true,
+    "product_index_show_breadcrumbs": true,
+    "enable_add_product_toast": true,
+    "notify_when_available_in_card": true,
+    "sticky_add_to_cart": true,
+    "show_tags": true,
+    "slider_background_size": "contain",
+    "imageZoom": false
+  },
+  "layout": null
+}

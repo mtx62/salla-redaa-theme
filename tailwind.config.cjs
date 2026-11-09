@@ -23,9 +23,9 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: '10px',
+      padding: '12px',
       screens: {
-        '2xl': '1280px',
+        '2xl': '1320px',
       },
     },
     fontFamily: {
@@ -43,8 +43,13 @@ module.exports = {
         dark: '#1D1F1F',
         darker: '#0E0F0F',
         danger: '#AE0A0A',
-        primary: 'var(--color-primary)',
-        'primary-dark': 'var(--color-primary-dark)',
+        primary: 'var(--color-primary, #6c7fd8)',
+        'primary-dark': 'var(--color-primary-dark, #5a6cc8)',
+        secondary: '#3d4750',
+        'top-header': '#333e59',
+        'bg-gray': '#f8f8fb',
+        'title-color': '#3d4750',
+        'text-muted': '#686e7d',
       },
       spacing: {
         3.75: '15px',

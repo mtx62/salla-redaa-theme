@@ -5,3 +5,5 @@ export { ProductPage } from './ProductPage';
 export { ProductDetails } from './ProductDetails';
 export { AddToCartForm } from './AddToCartForm';
 export { ProductCard } from './ProductCard';
+export { ProductCompareProvider, useProductCompare } from './ProductCompare';
+export { ProductOverlay } from './ProductOverlay';

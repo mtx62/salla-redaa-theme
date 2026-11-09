@@ -1,0 +1,6 @@
+@font-face { font-family: 'Dubai'; src: url('./dubai/Dubai-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Dubai'; src: url('./dubai/Dubai-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Dubai'; src: url('./dubai/Dubai-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Dubai'; src: url('./dubai/Dubai-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+:root, body { --font-main: 'Dubai', system-ui, sans-serif !important; --font-ar: 'Dubai', system-ui, sans-serif !important; }
+body { font-family: var(--font-main); font-size: 15px; line-height: 1.6; }

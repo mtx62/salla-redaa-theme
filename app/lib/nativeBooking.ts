@@ -58,7 +58,7 @@ export function registerNativeBookingHook(): void {
   registered = true;
   whenSallaLoaded((sdk) => {
     sdk.hooks?.registerHook?.('salla-add-product-button', 'componentDidLoad', (button: AddProductButton) => {
-      if (button.productType !== 'booking' || !button.host?.closest('.s-product-card-entry')) return;
+      if (button.productType !== 'booking' || !button.host?.closest('.s-product-card-entry, .gs-card, .gs-quick-view')) return;
       const addBookingProduct = button.addBookingProduct;
       button.addBookingProduct = () =>
         isNativeApp() ? openNativeBooking(button) : addBookingProduct.call(button);

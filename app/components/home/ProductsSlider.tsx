@@ -26,6 +26,17 @@ export interface ProductsSliderProps {
   onResolve?: (count: number) => void;
 }
 
+function formatTitle(title?: string) {
+  if (!title) return null;
+  const parts = title.trim().split(' ');
+  if (parts.length > 1) {
+    const first = parts.slice(0, -1).join(' ');
+    const last = parts[parts.length - 1];
+    return <>{first} <span>{last}</span></>;
+  }
+  return title;
+}
+
 /**
  * `products-slider` home block + the product page's "similar products" block
  * (rendered as `best-offers-<n>-slider` by the engine).
@@ -94,7 +105,7 @@ export function ProductsSlider({ data, onResolve }: ProductsSliderProps) {
     <div className="s-products-carousel">
       {(title || displayAllUrl) && (
         <div className="s-products-carousel__head">
-          {title && <h2 className="s-products-carousel__title">{title}</h2>}
+          {title && <h2 className="s-products-carousel__title">{formatTitle(title)}</h2>}
           {displayAllUrl && (
             <Link to={displayAllUrl} className="s-block__display-all">
               {t('blocks.home.display_all', 'View All')}

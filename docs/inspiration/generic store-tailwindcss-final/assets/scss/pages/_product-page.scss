@@ -1,0 +1,235 @@
+/* Product page */
+.gs-single-pro-contact {
+    .gs-sub-title {
+        h4 {
+            color: $secondary;
+        }
+    }
+    .gs-single-rating {
+        i {
+            color: $text-999;
+        }
+        i.fill {
+            color: #f4a263;
+        }
+    }
+    .gs-read-review {
+        a {
+            color: $text-777;
+        }
+    }
+    .pro-title {
+        h4 {
+            color: $title-color;
+        }
+    }
+    .gs-pro-variation-content {
+        ul {
+            li {
+                @include ease3;
+                border: 1px solid $border-eee;
+                &:hover {
+                    border: 1px solid $secondary;
+                }
+            }
+            li.active-variation {
+                border: 1px solid $secondary;
+            }
+        }
+    }
+    .gs-single-qty {
+        .qty-plus-minus {
+            border: 1px solid $border-eee;
+            input, .gs-qtybtn {
+                color: $title-color;
+            }
+        }
+        a.gs-btn-1 {
+            background-color: $primary;
+            color: $text-fff;
+            border: 1px solid transparent;
+            &:hover {
+                background-color: transparent;
+                color: $secondary;
+                border: 1px solid $secondary;
+            }
+        }
+    }
+    .gs-single-price-wrap {
+        h5 {
+            color: $title-color;
+            span {
+                color: $primary;
+            }
+        }
+    }
+    .gs-single-list {
+        h4 {
+            color: $title-color;
+        }
+        ul {
+            li {
+                color: $text-777;
+                span {
+                    color: $title-color;
+                }
+            }
+        }
+    }
+}
+
+.gs-single-pro-tab {
+    border: 1px solid $border-eee;
+    ul {
+        li {
+            a {
+                color: $title-color;
+                border: 1px solid $border-eee;
+            }
+        }
+        li.active {
+            a{
+                border: 1px solid $secondary;
+            }
+        }
+    }
+    .tab-content {
+        ul {
+            li {
+                color: $secondary;
+            }
+        }
+    }
+    .gs-reviews-form {
+        h3 {
+            color: $title-color;
+        }
+    }
+    .gs-pro-rating {
+        i {
+            color: $text-999;
+        }
+        i.fill {
+            color: #f4a263;
+        }
+    }
+    form {
+        input, textarea {
+            border: 1px solid $border-eee;
+            color: $text-color;
+        }
+        a.gs-btn-2 {
+            background-color: $primary;
+            color: $text-fff;
+            border: 1px solid transparent;
+            &:hover {
+                background-color: transparent;
+                color: $secondary;
+                border: 1px solid $secondary;
+            }
+        }
+    }
+}
+.section-single-product {
+    .gs-sidebar-box {
+        border: 1px solid $border-eee;
+        h3 {
+            color: $title-color;
+        }
+        .gs-sidebar-contact {
+            ul {
+                li {                    
+                    .gs-sidebar-block-item {
+                        &:hover {
+                            a, span {
+                                color: $primary;
+                            }
+                        }
+                        a, span {
+                            @include ease3;
+                            color: $text-777;
+                        }
+                    }
+                }
+            }
+        }        
+    }
+    .gs-sidebar-block.tags {
+        ul {
+            li {
+                a {
+                    @include ease3;
+                    border: 1px solid $secondary;
+                    color: $title-color;
+                    &:hover {                        
+                        border: 1px solid $primary;
+                        background-color: $primary;
+                        color: $text-fff;
+                    }
+                }
+            }
+        }
+    }
+    .gs-banner-inner {
+        span {
+            color: $title-color;
+        }
+        h5 {
+            color: $primary;
+        }
+    }
+}
+.gs-shop-wrap {
+    .gs-sidebar-title {
+        background-color: $bg-gray;
+    }
+}
+.gs-single-pro {
+    .single-pro-slider {
+        border: 1px solid $border-eee;
+        .single-product-cover {
+            img {
+                border: 1px solid $border-eee;
+            }
+        }
+        .single-nav-thumb {
+            img {
+                border: 1px solid $border-eee;
+            }
+        }
+    }
+    .single-nav-thumb {
+        button {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, .8);
+            font-size: 0;
+            border: 1px solid $border-eee;
+            border-radius: $radius-10;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-60%);
+            z-index: 55;
+        }
+        .slick-prev {
+            left: 0;
+            &:after {
+                content: "\f11e";
+                font-family: uicons-regular-rounded !important;
+                font-size: 20px;
+                line-height: 20px;
+                color: #fff;
+            }
+        }
+        .slick-next {
+            right: 0;
+            &:after {
+                content: "\f11f";
+                font-family: uicons-regular-rounded !important;
+                font-size: 20px;
+                line-height: 20px;
+                color: #fff;
+            }
+        }
+    }
+}

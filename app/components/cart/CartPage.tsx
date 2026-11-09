@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { SallaConditionalOffer } from '@salla.sa/twilight-components-react/conditional-offer';
 import { SallaOffer } from '@salla.sa/twilight-components-react/offer';
@@ -9,6 +9,7 @@ import { CartSummary, SeoCartWidget } from '@salla.sa/twilight-theme-engine/cart
 import { useTwilight } from '@salla.sa/twilight-theme-engine/providers';
 import { CartSkeleton } from '@salla.sa/twilight-theme-engine/skeleton';
 import { loyalty } from '@salla.sa/twilight-theme-engine/api/loyalty';
+import { whenSallaReady, onSallaEvent } from '@salla.sa/twilight-theme-engine/utils';
 import { cart } from '@salla.sa/twilight-theme-engine/api/cart';
 import type { CartPageProps } from '@salla.sa/twilight-theme-engine/routes/cart';
 import { CartItem } from './CartItem';
@@ -30,7 +31,10 @@ function CartPageContent({ page }: CartPageProps) {
   usePageConfig(page);
   const { data: loyaltyPoints } = useQuery(loyalty.queries.points());
 
-  const cartIdQuery = useQuery(cart.queries.currentId());
+  // Hydration can precede the SDK; reading an ID then caches a false empty cart.
+  const [sdkReady, setSdkReady] = useState(false);
+  useEffect(() => whenSallaReady(() => setSdkReady(true)), []);
+  const cartIdQuery = useQuery({ ...cart.queries.currentId(), enabled: sdkReady });
   const cartId = cartIdQuery.data;
 
   const cartQuery = useQuery({
@@ -43,6 +47,7 @@ function CartPageContent({ page }: CartPageProps) {
   // push cart changes back into React, so item totals and the summary would
   // otherwise stay stale until a page reload.
   const refetchCart = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: cart.queries.currentId().queryKey });
     if (cartId != null) {
       queryClient.invalidateQueries({ queryKey: cart.queries.detail(cartId).queryKey });
     }
@@ -50,18 +55,13 @@ function CartPageContent({ page }: CartPageProps) {
 
   // Belt-and-suspenders: also refetch on any SDK cart event that does fire.
   // Root on/off: onUpdated registers a wrapper that only offUpdated can remove.
-  useEffect(() => {
-    window.salla?.event?.on?.('cart::updated', refetchCart);
-    return () => {
-      window.salla?.event?.off?.('cart::updated', refetchCart);
-    };
-  }, [refetchCart]);
+  useEffect(() => onSallaEvent('cart::updated', refetchCart), [refetchCart]);
 
   // A failed request leaves its data undefined, so without this the skeleton
   // stayed up for good (e.g. `cart/<id>` answering an error).
   const failed = cartIdQuery.isError || cartQuery.isError;
   // The SDK knew of no cart.
-  const noCart = cartIdQuery.isSuccess && cartId == null;
+  const noCart = sdkReady && cartIdQuery.isSuccess && cartId == null;
 
   if (failed) {
     return (

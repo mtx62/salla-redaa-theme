@@ -99,3 +99,35 @@ body.footer-is-dark .store-footer {
     @apply border-white/10 text-white;
   }
 }
+
+/* Retain the native footer's live merchant data, with Generic Store surfaces. */
+.generic-store-footer .store-footer {
+  margin-top: 64px;
+  background: #f8f8fb;
+  color: #686e7d;
+  border-top: 1px solid #eee;
+  .store-footer__inner { background: #f8f8fb; border-color: #eee; }
+  .store-footer__bottom { background: #f1f1f3; max-width: none; padding-inline: max(20px, calc((100% - 1260px) / 2)); }
+  .store-footer__links h3 { color: #3d4750; font-size: 18px; }
+  .store-footer__desc { opacity: 1; line-height: 1.9; }
+  .store-footer__logo img { max-height: 56px; width: auto; }
+  .social-link,
+  salla-social a { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 10px; background: #3d4750; color: white; border-color: #3d4750; }
+  salla-social li { border-radius: 10px; }
+  .s-payments-list-item { border: 1px solid #eee; border-radius: 6px; background: white; }
+  .s-menu-footer-item { line-height: 1.8; }
+}
+body.footer-is-dark .generic-store-footer .store-footer {
+  background: #2b354c;
+  color: white;
+  .store-footer__inner { background: #333e59; border-color: #ffffff1a; }
+  .store-footer__links h3 { color: white; }
+  .social-link { background: transparent; }
+  .store-footer__bottom { background: #2b354c; }
+}
+@media (max-width: 767px) {
+  .generic-store-footer .store-footer { margin-top: 24px; }
+  .generic-store-footer .store-footer > .store-footer__inner,
+  .generic-store-footer .store-footer > .store-footer__bottom { display: block; }
+  .generic-store-footer .store-footer__bottom { padding-bottom: 28px; }
+}

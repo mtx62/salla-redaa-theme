@@ -83,7 +83,9 @@
 @import './04-components/user-pages';
 @import './04-components/home-blocks';
 @import './04-components/slider';
+@import './04-components/storefront';
 @import './04-components/product';
+@import './04-components/reference-card';
 @import './04-components/product-list';
 @import './04-components/cart';
 @import './04-components/reviews';
@@ -115,3 +117,8 @@
     display: none !important;
   }
 }
+
+// Current image references: warm paper, expressive type and organic hero shapes.
+@import './04-components/inspiration-refresh';
+
+@import './04-components/product-experience';

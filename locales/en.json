@@ -82,5 +82,30 @@
   "blocks.order_options.subtitle": "Choose from the available options.",
   "blocks.order_options.continue": "Continue",
   "blocks.order_options.total": "Total",
-  "blocks.order_options.required_message": "Please fill in the required fields"
+  "blocks.order_options.required_message": "Please fill in the required fields",
+  "blocks.card.quick_view": "Quick view",
+  "blocks.card.compare": "Compare products",
+  "blocks.card.remove_compare": "Remove from comparison",
+  "blocks.card.compare_limit": "Compare up to four products",
+  "blocks.card.price": "Price",
+  "blocks.card.rating": "Rating",
+  "blocks.card.no_reviews": "No reviews yet",
+  "blocks.card.availability": "Availability",
+  "blocks.card.details": "Details",
+  "blocks.card.choose_options": "Choose options",
+  "blocks.card.notify": "Notify me",
+  "blocks.card.load_error": "Could not load product options",
+  "blocks.card.retry": "Try again",
+  "blocks.card.loading": "Loading product…",
+  "blocks.card.full_details": "View full details",
+  "pages": {
+    "wishlist": {
+      "toggle": "Add or remove to wishlist"
+    }
+  },
+  "blocks.product.gift_toggle": "Send this product as a gift",
+  "blocks.product.reviews_title": "Customer ratings & reviews",
+  "blocks.product.reviews_intro": "Explore customer experiences and choose how to sort the feedback.",
+  "blocks.header.announcement": "Fast delivery to all regions | 100% authentic products",
+  "blocks.footer.scroll_to_top": "Back to top"
 }

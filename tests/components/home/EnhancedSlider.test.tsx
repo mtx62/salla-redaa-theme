@@ -1,5 +1,5 @@
 import React from 'react';
-import { afterEach, describe, it, expect, vi } from 'vitest';
+import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
 import { act, render, waitFor } from '@testing-library/react';
 import { EnhancedSlider } from '../../../app/components/home/EnhancedSlider';
 
@@ -22,6 +22,10 @@ vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
 }));
 
 describe('EnhancedSlider', () => {
+  beforeEach(() => {
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: false, addEventListener() {}, removeEventListener() {} }));
+  });
+  afterEach(() => vi.unstubAllGlobals());
   const mockSlides = [
     { image: 'slide1.jpg', title: 'Slide 1', description: 'Description 1' },
     { image: 'slide2.jpg', title: 'Slide 2', description: 'Description 2' },
@@ -99,7 +103,7 @@ describe('EnhancedSlider', () => {
       />
     );
     const cta = container.querySelector('.home-slider__cta');
-    expect(cta?.textContent).toBe('Shop now');
+    expect(cta?.textContent).toContain('Shop now');
     expect(cta?.getAttribute('href')).toBe('/offers');
   });
 
@@ -128,7 +132,7 @@ describe('EnhancedSlider', () => {
       />
     );
     const cta = container.querySelector('.home-slider__cta');
-    expect(cta?.textContent).toBe('Shop now');
+    expect(cta?.textContent).toContain('Shop now');
     expect(cta?.getAttribute('href')).toBe('/offers');
   });
 
@@ -150,7 +154,7 @@ describe('EnhancedSlider', () => {
     expect(container.querySelector('.home-slider__cta')?.getAttribute('href')).toBe('/new');
   });
 
-  it('falls back to the legacy link, then to #, when the slide has no url', () => {
+  it('uses the legacy link and omits a button without a destination', () => {
     const { container } = render(
       <EnhancedSlider
         data={{
@@ -163,27 +167,25 @@ describe('EnhancedSlider', () => {
     );
     const ctas = container.querySelectorAll('salla-slider .home-slider__cta');
     expect(ctas[0]?.getAttribute('href')).toBe('/old');
-    expect(ctas[1]?.getAttribute('href')).toBe('#');
+    expect(ctas).toHaveLength(1);
   });
 
-  it('renders slides with overlay background', () => {
+  it('renders the merchant image beside the copy', () => {
     const { container } = render(<EnhancedSlider data={{ slider_banner: mockSlides }} />);
-    const overlay = container.querySelector('.overlay-bg');
-    expect(overlay).toBeTruthy();
-    expect(overlay?.getAttribute('style')).toContain('background-image');
+    const image = container.querySelector('.store-hero__media img');
+    expect(image?.getAttribute('src')).toBe('slide1.jpg');
+    expect(image?.getAttribute('alt')).toBe('Slide 1');
   });
 
-  it('renders slide title with parallax attribute', () => {
+  it('renders the merchant slide title', () => {
     const { container } = render(<EnhancedSlider data={{ slider_banner: mockSlides }} />);
     const title = container.querySelector('h2');
-    expect(title?.getAttribute('data-swiper-parallax')).toBe('-500');
     expect(title?.textContent).toBe('Slide 1');
   });
 
-  it('renders slide description with parallax attribute', () => {
+  it('renders the merchant slide description', () => {
     const { container } = render(<EnhancedSlider data={{ slider_banner: mockSlides }} />);
-    const desc = container.querySelector('.description');
-    expect(desc?.getAttribute('data-swiper-parallax')).toBe('-300');
+    const desc = container.querySelector('.store-hero__description');
     expect(desc?.textContent).toBe('Description 1');
   });
 
@@ -194,7 +196,7 @@ describe('EnhancedSlider', () => {
 
   it('uses slides property as fallback', () => {
     const { container } = render(<EnhancedSlider data={{ slides: mockSlides }} />);
-    expect(container.querySelector('.overlay-bg')).toBeTruthy();
+    expect(container.querySelector('.store-hero__media img')).toBeTruthy();
   });
 
   describe('SSR poster of the first slide', () => {
@@ -240,6 +242,15 @@ describe('EnhancedSlider', () => {
       const slideCta = container.querySelector('salla-slider a.home-slider__cta');
       expect(slideCta?.getAttribute('href')).toBe('/offers');
       expect(slideCta?.hasAttribute('tabindex')).toBe(false);
+    });
+
+    it('hands over from the SSR poster when slide media loads even if afterInit was missed', async () => {
+      const { container } = render(<EnhancedSlider data={{ slider_banner: mockSlides, priority: true }} />);
+      expect(container.querySelector('.enhanced-slider__poster')).toBeTruthy();
+      await act(async () => {
+        container.querySelector('salla-slider .store-hero__media img')!.dispatchEvent(new Event('load'));
+      });
+      await waitFor(() => expect(container.querySelector('.enhanced-slider__poster')).toBeNull());
     });
 
     it('removes the poster once the slider reports it has initialised', async () => {
@@ -347,10 +358,22 @@ describe('EnhancedSlider', () => {
       expect(video.getAttribute('src')).toBe('https://cdn.salla.sa/hero.mp4');
       expect(video.getAttribute('poster')).toBe('slide1.jpg');
       expect(video.loop).toBe(true);
-      expect(video.closest('.overlay-bg')).toBeTruthy();
+      expect(video.closest('.store-hero__background')).toBeTruthy();
       // No IntersectionObserver in jsdom, so it plays straight away, muted.
       await waitFor(() => expect(play).toHaveBeenCalled());
       expect(video.muted).toBe(true);
+    });
+
+    it('renders video behind the copy across the full slide, without the split image circle', async () => {
+      setReducedMotion(false);
+      vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined);
+      const { container, getByRole } = render(<EnhancedSlider data={{ slides: [{ ...mockSlides[0], video: 'https://cdn.salla.sa/hero.mp4' }] }} />);
+      await waitFor(() => expect(container.querySelector('.store-hero--video video')).toBeTruthy());
+      expect(container.querySelector('.store-hero__visual')).toBeNull();
+      expect(container.querySelector('.store-hero__shape')).toBeNull();
+      expect(container.querySelector('.store-hero__shade')).toBeTruthy();
+      expect(getByRole('heading', { name: mockSlides[0].title })).toBeTruthy();
+      expect(container.querySelector('.store-hero__background')?.contains(container.querySelector('h2'))).toBe(false);
     });
 
     it('plays a file only while its slide is on screen, copies of the slide included', async () => {
@@ -408,11 +431,25 @@ describe('EnhancedSlider', () => {
       expect(iframe.dataset.state).toBe('playing');
     });
 
+    it('uncovers a playing YouTube video when the slider init event was missed', async () => {
+      const { container } = render(<EnhancedSlider data={{ slider_banner: youtubeSlides, priority: true }} />);
+      const iframe = await waitFor(() => {
+        const frame = container.querySelector<HTMLIFrameElement>('iframe');
+        expect(frame).toBeTruthy();
+        return frame!;
+      });
+      expect(container.querySelector('.enhanced-slider__poster')).toBeTruthy();
+      await act(async () => {
+        window.dispatchEvent(new MessageEvent('message', { source: iframe.contentWindow, data: JSON.stringify({ event: 'onStateChange', info: 1 }) }));
+      });
+      await waitFor(() => expect(container.querySelector('.enhanced-slider__poster')).toBeNull());
+    });
+
     it('drops the YouTube frame and keeps the image when YouTube reports an error', async () => {
       const { container, fromFrame } = await renderYouTube();
       fromFrame({ event: 'onError', info: 101 });
       expect(container.querySelector('.enhanced-slider__video')).toBeNull();
-      expect(container.querySelector('.overlay-bg')?.getAttribute('style')).toContain('slide1.jpg');
+      expect(container.querySelector('.store-hero__background img')?.getAttribute('src')).toBe('slide1.jpg');
     });
 
     it('starts asking a late-loading YouTube frame for its state once it loads', async () => {
@@ -462,7 +499,7 @@ describe('EnhancedSlider', () => {
       );
       await act(async () => undefined);
       expect(container.querySelector('.enhanced-slider__video')).toBeNull();
-      expect(container.querySelector('.overlay-bg')?.getAttribute('style')).toContain('slide1.jpg');
+      expect(container.querySelector('.store-hero__background img')?.getAttribute('src')).toBe('slide1.jpg');
     });
   });
 });

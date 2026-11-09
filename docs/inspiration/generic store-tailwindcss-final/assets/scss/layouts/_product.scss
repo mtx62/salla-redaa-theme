@@ -1,0 +1,258 @@
+/* Product */
+.gs-pro-box {
+    .gs-pro-img {
+        border: 1px solid $border-eee;
+        .gs-pro-actions {
+            @include ease3;
+            width: 174px;
+            padding: 10px;
+            bottom: -20px;
+            border-radius: 10px 10px 0 0;
+            .gs-btn-group {
+                &:hover {
+                    background-color: $primary;
+                    border-color: $primary;
+                    i {
+                        color: $text-fff;
+                    }
+                }
+            }
+            li {
+                border: 1px solid $border-eee;
+                background-color: $bg-fff;
+                a {
+                    color: $secondary;
+                }
+            }
+        }
+        .flags {
+            span {
+                color: $text-777;
+            }
+        }
+    }
+    &:hover {
+        .gs-pro-img {
+            .inner-img {
+                img {
+                    transform: scale(1.1);
+                    &:not(:last-child) {
+                        opacity: 0;
+                    }
+                }
+                img.hover-img {
+                    opacity: 1;
+                }
+            }
+            .gs-pro-actions {
+                opacity: 1;
+                bottom: -1px;
+                background-color: rgba(255, 255, 255, 0.8);
+                border: 1px solid $border-eee;
+                backdrop-filter: blur(4px);
+            }
+        }
+    }
+    .gs-pro-contact {
+        h4.gs-pro-title {
+            a {
+                color: $secondary;
+                &:hover {
+                    color: $primary;
+                }
+            }
+        }
+        .gs-pro-subtitle {
+            a {
+                color: $text-777;
+            }
+            .gs-pro-rating {
+                i {
+                    color: $text-999;
+                }
+                i.fill {
+                    color: #f4a263;
+                }
+            }
+        }
+        .gs-price {
+            .new-price {
+                color: $secondary;
+            }
+            .old-price {
+                color: $text-777;
+            }
+        }
+        .gs-pro-option {
+            .gs-pro-color {
+                ul.gs-opt-swatch {
+                    li.active {
+                        margin-right: 5px;
+                        padding: 2px;
+                        position: relative;
+                        &:after {
+                            content: "";
+                            width: 20px;
+                            height: 20px;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            border-radius: 50%;
+                            border: 1px solid $secondary;
+                            opacity: 1 !important;
+                        }
+                        &:before {
+                            content: "";
+                            width: 18px;
+                            height: 18px;
+                            position: absolute;
+                            top: 1px;
+                            left: 1px;
+                            border-radius: 50%;
+                            border: 3px solid #fff;
+                            opacity: 1 !important;
+                        }
+                    }
+                    li {
+                        position: relative;
+                        &:after, &:before {
+                            @include ease3;
+                        }
+                        &:after {
+                            content: "";
+                            width: 20px;
+                            height: 20px;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            border-radius: 50%;
+                            border: 1px solid $secondary;
+                            opacity: 0;
+                        }
+                        &:before {
+                            content: "";
+                            width: 18px;
+                            height: 18px;
+                            position: absolute;
+                            top: 1px;
+                            left: 1px;
+                            border-radius: 50%;
+                            border: 3px solid #fff;
+                            opacity: 0;
+                        }
+                        &:hover {
+                            &:after, &:before {
+                                opacity: 1;
+                            } 
+                        }
+                    }
+                }
+            }
+            .gs-pro-size {
+                ul.gs-opt-size {
+                    li.active {
+                        a {
+                            border-color: $secondary;
+                        }
+                    }
+                    li {
+                        a {
+                            @include ease3;
+                            color: $text-777;
+                            border: 1px solid $border-eee;
+                        }
+                        &:hover {
+                            a {
+                                border-color: $secondary;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.gs-deal-block {
+    &:hover {
+        .owl-nav {
+            .owl-prev, .owl-next { 
+                @include ease3;
+                opacity: 1;
+            }
+        }
+    }
+    .owl-dots, .owl-nav {
+        display: flex !important;        
+        justify-content: center;
+    }
+    .owl-dots {
+        padding-top: 12px;
+        .owl-dot {
+            @include ease3;
+            width: 15px;
+            height: 15px;
+            margin: 2px;
+            border: 1px solid $secondary;
+            border-radius: 30px;
+        }
+        .owl-dot.active {
+            width: 30px;
+            height: 15px;
+            border: 1px solid $secondary;
+            background-color: $secondary;
+        }
+    }
+    .owl-nav {
+        .owl-prev, .owl-next {
+            width: 35px;
+            height: 35px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, .8) !important;
+            border-radius: 10px;
+            opacity: 0;
+            span {
+                font-size: 30px;
+                color: #fff;
+                line-height: 28px;
+            }
+        }
+        .owl-prev {
+            left: -5px;
+        }
+        .owl-next {
+            right: -5px;
+        }
+        .owl-next.disabled, .owl-prev.disabled {
+            background-color: rgba(0, 0, 0, .4) !important;
+        }
+    }
+}
+.gs-banner-inner {
+    .gs-banner-title {
+        color: $text-777;
+    }
+    .banner-content {
+        a {
+            background-color: $primary;
+            color: $text-fff;
+            &:hover {
+                background-color: $secondary;
+            }
+        }
+    }
+}
+/* Responsive css */
+@media only screen and (max-width: 575px) {
+    .gs-deal-block {
+        .owl-nav {
+            .owl-prev {
+                left: 12px;
+            }
+            .owl-next {
+                right: 12px;
+            }
+        }
+    }
+}

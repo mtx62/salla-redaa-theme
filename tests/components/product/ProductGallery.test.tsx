@@ -7,6 +7,7 @@ import { ProductGallery } from '../../../app/components/product/ProductGallery';
 
 vi.mock('@salla.sa/twilight-theme-engine/providers', () => ({
   useTwilight: () => ({ theme: { settings: {} } }),
+  useNavigate: () => vi.fn(),
 }));
 
 vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
@@ -104,6 +105,10 @@ describe('ProductGallery media', () => {
 });
 
 describe('ProductGallery first image', () => {
+  it('renders a disabled wishlist placeholder during SSR without subscribing to browser state', () => {
+    const html = renderToString(<ProductGallery product={product} />);
+    expect(html).toMatch(/product-gallery__bar-btn btn--wishlist[^>]*disabled=""/);
+  });
   it('server-renders the first image over the slider, ahead of the app JS', () => {
     const html = renderToString(<ProductGallery product={product} />);
 
@@ -113,32 +118,13 @@ describe('ProductGallery first image', () => {
     );
   });
 
-  it('re-inserts the slider it holds a ref to on the next frame, in the same place', async () => {
-    const frames: FrameRequestCallback[] = [];
-    const raf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
-      frames.push(callback);
-      return frames.length;
-    });
-
-    try {
-      const { container } = render(<ProductGallery product={product} />);
-      const slider = container.querySelector(`#details-slider-${product.id}`)!;
-      const parent = slider.parentElement!;
-      const next = slider.nextSibling;
-      const removeChild = vi.spyOn(parent, 'removeChild');
-      const insertBefore = vi.spyOn(parent, 'insertBefore');
-
-      act(() => frames.splice(0).forEach((callback) => callback(0)));
-
-      expect(removeChild).toHaveBeenCalledWith(slider);
-      expect(insertBefore).toHaveBeenCalledWith(slider, next);
-      expect(slider.parentElement).toBe(parent);
-      expect(slider.nextSibling).toBe(next);
-      // Let the poster's async hide finish inside the test.
-      await waitFor(() => expect(container.querySelector('.product-gallery__poster')).toBeNull());
-    } finally {
-      raf.mockRestore();
-    }
+  it('remounts the slider through React when navigating to another product', async () => {
+    const { container, rerender } = render(<ProductGallery product={product} />);
+    const previous = container.querySelector(`#details-slider-${product.id}`)!;
+    rerender(<ProductGallery product={{ ...product, id: 222, images: [product.images[0]] }} />);
+    await waitFor(() => expect(container.querySelector('#details-slider-222')).toBeTruthy());
+    expect(container.contains(previous)).toBe(false);
+    expect(container.querySelectorAll('[slot="items"] a')).toHaveLength(1);
   });
 
   it('drops the copy once the slider is laid out', async () => {

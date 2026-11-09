@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouterState } from '@tanstack/react-router';
-import { SallaSearch } from '@salla.sa/twilight-components-react/search';
+import { SallaSearch, SallaSearchCore } from '@salla.sa/twilight-components-react/search';
 import { SallaSocial } from '@salla.sa/twilight-components-react/social';
 import { SallaUserMenu } from '@salla.sa/twilight-components-react/user-menu';
 import { SallaCartSummary } from '@salla.sa/twilight-components-react/cart-summary';
-import { useTwilight, useIsHome } from '@salla.sa/twilight-theme-engine/providers';
+import { useTwilight, useIsHome, useNavigate } from '@salla.sa/twilight-theme-engine/providers';
 import { useTranslation } from '@salla.sa/twilight-theme-engine/i18n';
 import { HookSlot } from '@salla.sa/twilight-theme-engine/hooks';
-import { Image } from '@salla.sa/twilight-theme-engine/common';
+import { Image, Link } from '@salla.sa/twilight-theme-engine/common';
 import { PageAdvertisements } from '@salla.sa/twilight-theme-engine/layout';
-import { MapPinIcon, SearchIcon, ShoppingBagIcon } from '../icons';
+import { MapPinIcon, ShoppingBagIcon } from '../icons';
+import { ReferenceIcon } from '../common/ReferenceIcon';
+import { useUser } from '@salla.sa/twilight-theme-engine/hooks/useUser';
 import { useHydrated } from '../../hooks/useHydrated';
 import { useAppSafeAreaTop } from '../../hooks/useAppSafeAreaTop';
 import { HOME_ROUTE_ID, PRODUCT_ROUTE_ID } from '../../lib/routeIds';
@@ -17,8 +19,16 @@ import { HeaderMainMenu } from './HeaderMainMenu';
 import { HeaderNav } from './HeaderNav';
 import { HeaderTopnav } from './HeaderTopnav';
 
+const SearchComponent = SallaSearchCore || SallaSearch;
+
 /** Opens the Salla search modal (the `<SallaSearch />` at the end of the header). */
-const openSearch = () => window.salla?.event?.dispatch('search::open');
+const openSearch = () => {
+  window.salla?.event?.dispatch('search::open');
+  const searchEl = (typeof document !== 'undefined' ? document.querySelector('salla-search') : null) as
+    | (HTMLElement & { open?: () => void })
+    | null;
+  searchEl?.open?.();
+};
 
 const openScopes = () => window.salla?.event?.dispatch('scopes::open');
 
@@ -27,16 +37,40 @@ const hasSocialLinks = (social?: object) =>
   Object.entries(social ?? {}).some(([key, value]) => Boolean(value) && key !== 'whatsapp');
 
 /** Search trigger — opens the Salla search modal via the `search::open` event. */
-function SearchButton({ label }: { label: string }) {
+function SearchButton({ label, isDefault }: { label: string; isDefault?: boolean }) {
+  if (isDefault) {
+    return (
+      <button
+        type="button"
+        className="header-action site-header__search"
+        aria-label={label}
+        onClick={openSearch}
+      >
+        <ReferenceIcon name="search" />
+      </button>
+    );
+  }
+
   return (
-    <button
-      type="button"
-      className="header-action site-header__search"
-      aria-label={label}
-      onClick={openSearch}
-    >
-      <SearchIcon aria-hidden="true" />
-    </button>
+    <>
+      <button
+        type="button"
+        className="site-header__search-field site-header__search-tab hidden lg:flex"
+        aria-label={label}
+        onClick={openSearch}
+      >
+        <ReferenceIcon name="search" />
+        <span className="site-header__search-tab-label">{label}</span>
+      </button>
+      <button
+        type="button"
+        className="header-action site-header__search lg:hidden"
+        aria-label={label}
+        onClick={openSearch}
+      >
+        <ReferenceIcon name="search" />
+      </button>
+    </>
   );
 }
 
@@ -118,6 +152,8 @@ interface HeaderProps {
 
 export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = {}) {
   const { store, theme } = useTwilight();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useUser();
   const { t } = useTranslation();
   const isDefaultLayout = theme?.settings?.header_layout === 'default';
   const stickyEnabled = theme?.settings?.header_is_sticky !== false;
@@ -228,7 +264,7 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
       <div className="site-header__bar-outer">
         <div className={`site-header__bar${scrolled ? ' is-scrolled' : ''}`}>
           <div className="container site-header__bar-inner">
-            <div className="site-header__nav-toggle">
+            <div className={`site-header__nav-toggle${isDefaultLayout ? ' lg:hidden' : ''}`}>
               <button
                 type="button"
                 className="header-action"
@@ -236,55 +272,94 @@ export function Header({ navOpen: navOpenProp, onNavOpenChange }: HeaderProps = 
                 aria-expanded={navOpen}
                 onClick={() => setNavOpen(true)}
               >
-                {/* CSS burger — staggered bars that even out on hover/focus
-                    (styles: header.scss `.site-header__burger`). */}
-                <span className="site-header__burger" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                </span>
+                {isDefaultLayout ? <ReferenceIcon name="apps" /> : (
+                  <span className="site-header__burger" aria-hidden="true"><span /><span /><span /></span>
+                )}
               </button>
             </div>
 
-            <a className="site-header__brand" href={store?.url || '/'}>
+            <Link className="site-header__brand" to="/">
               <Image
-                src={store?.logo}
+                src={
+                  (theme?.settings as Record<string, unknown> | undefined)?.header_custom_logo as string ||
+                  store?.logo || '/images/logo.png'
+                }
                 alt={`${store?.name || 'Store'} logo`}
                 priority
                 width={140}
                 height={48}
               />
               <span className="sr-only">{store?.name || 'Store'}</span>
-            </a>
+            </Link>
 
             {isDefaultLayout && (
-              <nav
-                className="site-header__mainmenu"
-                aria-label={t('blocks.header.main_menu', 'Menu')}
-              >
+              <nav className="site-header__mainmenu site-header__capsule-menu hidden lg:flex items-center justify-center flex-1" aria-label={t('blocks.header.main_menu', 'Menu')}>
                 <HeaderMainMenu />
               </nav>
             )}
 
             <div className="site-header__actions">
-              <SallaUserMenu avatarOnly showHeader relativeDropdown className="header-action" />
+              <SallaUserMenu avatarOnly showHeader relativeDropdown className="header-action">
+                {!isLoggedIn && (
+                  <button slot="login-btn" type="button" className="site-header__account-trigger" aria-label={t('blocks.header.login', 'Login')} onClick={() => window.salla?.event?.dispatch('login::open')}><ReferenceIcon name="user" /></button>
+                )}
+              </SallaUserMenu>
               {store?.scope && (
                 <ScopeButton label={store.scope.name || t('blocks.header.branches', 'Branches')} />
               )}
-              <SallaCartSummary className="header-action">
-                <ShoppingBagIcon slot="icon" aria-hidden="true" />
-              </SallaCartSummary>
-              <SearchButton label={searchLabel} />
+              <div className="site-header__cart-link" onClickCapture={(event) => {
+                if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                event.stopPropagation();
+                navigate('/cart');
+              }}>
+                <SallaCartSummary className="header-action site-header__cart">
+                  <ShoppingBagIcon slot="icon" className="w-5 h-5" aria-hidden="true" />
+                </SallaCartSummary>
+              </div>
+              {isDefaultLayout && (
+                <div className="site-header__desktop-search hidden lg:flex items-center">
+                  <button
+                    type="button"
+                    className="site-header__search-field site-header__search-tab"
+                    aria-label={searchLabel}
+                    onClick={openSearch}
+                  >
+                    <ReferenceIcon name="search" />
+                    <span className="site-header__search-tab-label">{searchLabel}</span>
+                  </button>
+                </div>
+              )}
+              <div className={isDefaultLayout ? 'site-header__compact-search lg:hidden' : undefined}>
+                <SearchButton label={searchLabel} isDefault={isDefaultLayout} />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      {isDefaultLayout && (
+        <div className="site-header__navigation lg:hidden">
+          <div className="container site-header__navigation-inner">
+            <button
+              type="button"
+              className="site-header__categories"
+              onClick={() => setNavOpen(true)}
+              aria-expanded={navOpen}
+            >
+              <ReferenceIcon name="apps" className="site-header__categories-icon" />
+              <span className="site-header__categories-label">{t('common.titles.categories', 'Categories')}</span>
+              <ReferenceIcon name="angle-small-down" className="site-header__categories-caret" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {showIntro && <HeaderIntro />}
 
       <HeaderNav open={navOpen} onClose={() => setNavOpen(false)} />
 
-      <SallaSearch suppressHydrationWarning />
+      <SearchComponent suppressHydrationWarning />
 
       <HookSlot name="header:end" />
     </header>

@@ -142,30 +142,59 @@
   - content order becomes: subtitle, title, price
 */
 .s-product-card {
-  /* `ProductCard.tsx` relocates the wishlist button into the footer, but only
-     from a mount effect — every vertical card briefly shows the engine's
-     default image-corner button first (a visible flash on every page with
-     product cards, since every current usage goes through that wrapper).
-     `.s-product-card-vertical` is the engine's own class, present in the
-     first paint, so hiding the image-overlay copy here (rather than from
-     the wrapper's effect) removes the flash instead of just timing it
-     differently. */
-  .s-product-card-vertical .s-product-card-image > .s-product-card-wishlist-btn {
+  /* Vertical product card styling (Inspiration: generic-store-astro) */
+  &.s-product-card-vertical {
+    @apply border-0 bg-white transition-all duration-300;
+    border-radius: 0;
+    overflow: visible;
+
+    &:hover {
+      box-shadow: none;
+      .s-product-card-image { border-color: #c6cde9; }
+
+      .s-product-card-image img {
+        transform: scale(1.05);
+      }
+    }
+
+    .s-product-card-content { padding: 16px 0 0; }
+    .s-product-card-content-footer { padding-top: 12px; }
+    .s-product-card-price,
+    .s-product-card-sale-price h4,
+    .s-product-card-starting-price h4 { color: #3d4750 !important; font-weight: 700; }
+
+    .s-product-card-image {
+      @apply overflow-hidden rounded-[10px] border border-[#eee];
+
+      img {
+        @apply transition-transform duration-500 ease-in-out;
+      }
+    }
+
+    .s-product-card-content-title a {
+      color: #3d4750;
+      transition: color 0.2s ease;
+      &:hover {
+        color: var(--color-primary, #6c7fd8);
+      }
+    }
+  }
+
+  /* `ProductCard.tsx` relocates the wishlist button into the footer */
+  &.s-product-card-vertical .s-product-card-image > .s-product-card-wishlist-btn {
     display: none;
   }
 
   .s-product-card-content-footer {
     @apply flex items-center gap-1.5;
 
-    /* the add-to-cart fills the row — the deferred loader wraps it in a bare
-       <div>, so target that (and the element itself, once hydrated). */
+    /* the add-to-cart fills the row */
     > div,
     > salla-add-product-button {
       @apply w-full flex-1 min-w-0;
     }
 
-    /* wishlist stays a fixed 36px circle, however the engine wraps it
-       (bare button on the grid card, `.s-button-wrap` on the list card) */
+    /* wishlist button with 10px radius */
     > .s-product-card-wishlist-btn,
     > .s-button-wrap {
       @apply w-9 flex-none;
@@ -180,7 +209,11 @@
       button,
       .s-button-btn,
       .s-button-element {
-        @apply w-9 h-9 min-w-0 m-0 p-0 flex-none inline-flex items-center justify-center rounded-full border border-gray-200 bg-white;
+        @apply w-9 h-9 min-w-0 m-0 p-0 flex-none inline-flex items-center justify-center rounded-[10px] border border-[#eee] bg-[#f8f8fb] text-[#3d4750] transition-all;
+
+        &:hover {
+          @apply bg-primary border-primary text-white;
+        }
       }
 
       svg {
@@ -188,24 +221,25 @@
       }
     }
 
-    /* list-card wishlist arrives wrapped in `.s-button-wrap` (a *direct* footer
-       child — the add-to-cart's own `.s-button-wrap` is nested, so `>` keeps
-       this off it) */
+    /* list-card wishlist */
     > .s-button-wrap .s-button-icon {
-      @apply w-9 h-9 min-w-0 m-0 p-0 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white;
-
-      svg {
-        @apply w-4 h-4;
-      }
-    }
-
-    /* solid, pill-rounded add-to-cart, matched to the wishlist button height
-       (the engine renders it as fill="outline") */
-    .s-button-btn {
-      @apply h-9 bg-primary text-primary-reverse border-primary rounded-full;
+      @apply w-9 h-9 min-w-0 m-0 p-0 inline-flex items-center justify-center rounded-[10px] border border-[#eee] bg-[#f8f8fb] text-[#3d4750] transition-all;
 
       &:hover {
-        @apply bg-primary-d text-primary-reverse border-primary-d opacity-100;
+        @apply bg-primary border-primary text-white;
+      }
+
+      svg {
+        @apply w-4 h-4;
+      }
+    }
+
+    /* solid, 10px-rounded add-to-cart (Inspiration: generic-store-astro) */
+    .s-button-btn {
+      @apply h-9 bg-primary text-white border-primary rounded-[10px] font-medium transition-all;
+
+      &:hover {
+        @apply bg-primary-dark border-primary-dark opacity-100 shadow-sm;
       }
 
       svg {
@@ -401,12 +435,10 @@ salla-gifting {
         @apply w-auto m-0 flex-1 delay-1000;
       }
 
-      .hydrated & {
-        &,
-        &__quantity,
-        salla-add-product-button {
-          @apply translate-y-0 opacity-100;
-        }
+      &,
+      &__quantity,
+      salla-add-product-button {
+        @apply translate-y-0 opacity-100;
       }
     }
 
@@ -902,11 +934,11 @@ salla-gifting {
   @apply w-full max-w-[120px];
 }
 
-/* Product-page add-to-cart — pill-rounded, matching the product-card button */
+/* Product-page actions share the reference's 10px corners. */
 .sticky-product-bar__btn {
   .s-button-btn,
   .s-button-element {
-    @apply rounded-full;
+    border-radius: 10px;
   }
 }
 
@@ -915,7 +947,7 @@ salla-gifting {
    property (its own `:host` default is 0.375rem); a value set on the host element
    from out here wins. */
 .s-add-product-button-main .s-add-product-button-mini-checkout {
-  --salla-fast-checkout-button-border-radius: 9999px;
+  --salla-fast-checkout-button-border-radius: 10px;
 }
 
 /* The deferred loader wraps `salla-add-product-button` in a bare <div> that
@@ -1008,4 +1040,43 @@ salla-gifting {
   inset-inline: 0;
   top: 0;
   z-index: 2;
+}
+
+/* Product page: bordered gallery and 10px controls in the final reference. */
+.store-product {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 36px;
+  padding-block: 30px 50px;
+  .product-gallery {
+    width: 100% !important;
+    margin-inline: 0;
+    .details-slider .s-slider-container { padding: 15px; border: 1px solid #eee; border-radius: 10px; }
+    .details-slider .swiper-slide { border-radius: 10px; }
+    .s-slider-thumbs img { border: 1px solid #eee; border-radius: 10px; }
+    .product-gallery__poster { inset-inline: 16px; top: 16px; }
+  }
+  &__details { width: 100%; min-width: 0; color: #777; }
+  &__details h1 { color: #3d4750; font-size: 24px; line-height: 1.4; }
+  &__details .product__description { color: #777; line-height: 1.8; }
+  &__price { padding-block: 12px; border-bottom: 1px solid #eee; }
+  &__price p { color: #3d4750; font-size: 24px; }
+  .store-product__details .s-quantity-input-container { border-radius: 10px; border-color: #eee; }
+  .store-product__details .s-quantity-input-button { border-radius: 6px; }
+}
+@media (max-width: 1023px) {
+  .store-product {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-block: 20px 30px;
+    .product-gallery { position: relative; top: 0; padding-bottom: 0; max-width: 560px; margin-inline: auto; }
+    &__details { position: static; overflow: visible; }
+  }
+}
+@media (max-width: 767px) {
+  .store-product { padding-top: 12px; }
+  .store-product .product-gallery .details-slider .s-slider-container { padding: 10px; }
+  .store-product .product-gallery__poster { inset-inline: 11px; top: 11px; }
+  .store-product__details h1 { font-size: 22px; }
 }

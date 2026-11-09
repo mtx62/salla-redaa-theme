@@ -9,8 +9,8 @@ upstream change the fork might have taken in, not proof that it was synced then.
 
 | Fork (`app/components/…`)     | Engine source (`tailwind/…` in the engine)    | Wired in by                                        | Base   | What the fork changes                                                                                      |
 | ----------------------------- | --------------------------------------------- | -------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
-| `product/ProductPage.tsx`     | `routes/product/ProductPage.tsx`              | `app/routes/$slug.p$id.tsx`                        | 1.0.78 | Renders the forks below and the theme `ProductsSlider`; drops the store-wide testimonials block            |
-| `product/ProductDetails.tsx`  | `components/product/ProductDetails.tsx`       | `ProductPage`                                      | 1.0.85 | Flat data-column blocks (no card background, rounding or padding)                                          |
+| `product/ProductPage.tsx`     | `routes/product/ProductPage.tsx`              | `app/routes/$slug.p$id.tsx`                        | 1.0.78 | Renders the forks below and the theme `ProductsSlider`; drops the store-wide testimonials block; adds Generic Store layout classes            |
+| `product/ProductDetails.tsx`  | `components/product/ProductDetails.tsx`       | `ProductPage`                                      | 1.0.85 | Flat data-column blocks; adds a class for the Generic Store price styling                                          |
 | `product/ProductGallery.tsx`  | `components/product/ProductGallery.tsx`       | `ProductPage`                                      | 1.0.89 | Thumbs use `slidesPerView: 'auto'`; `<SallaMetadata>` renders under the slider                             |
 | `product/AddToCartForm.tsx`   | `components/product/AddToCartForm.tsx`        | `ProductPage`                                      | 1.0.78 | `flex-col gap-8` form with flat sections; sticky bar keeps `bg-white`                                      |
 | `product/ProductListPage.tsx` | `routes/product-listing/ProductListPage.tsx`  | `registry` `product:list-page` in `app/router.tsx` | 1.0.83 | Pill toolbar (count, grid/list switch, sort), desktop "hide filters" toggle, preferences in `localStorage` |
@@ -42,3 +42,20 @@ Add a row here, and say at the top of the file's doc comment what differs from t
 only when a hook slot, the `registry`, or a home-component key can't do the job: every fork is
 code you now maintain by hand. See
 [Fork a built-in route](https://docs.salla.dev/twilight/react/recipes/fork-a-built-in-route).
+
+### Product card presentation (2026-10-26)
+
+`app/components/product/ProductCard.tsx` is a registry replacement with theme-owned markup, not a copied engine component. Its quick view reuses the maintained AddToCartForm fork; that fork now supplies `productAvailable` alongside explicit options data, as required by the Salla options widget. Review the public ProductCard props, product detail query and `useProduct` contracts on engine upgrades.
+
+### Product page repair (2026-10-27)
+
+ProductPage passes the live `useProduct` state to both details and the purchase form. ProductGallery uses a keyed slider without DOM reparenting and uses public navigation for its home fallback. Gallery/title wishlist buttons share a hydration-safe theme wrapper around the public engine wishlist hook.
+
+### Engine update audit (2026-10-27)
+
+Updated the maintained dependency to 1.0.133. Compared shipped tailwind sources against 1.0.129: no changes to ProductPage, ProductDetails, ProductGallery, AddToCartForm or CartPage, so their theme forks require no upstream component merge. New engine changes concern live-editor moves, snippets, maintenance and home rendering. Keep the hydration-safe wishlist wrapper; the public hook still supplies an unstable server snapshot.
+
+
+### 2026-10-30 — engine 1.0.139 compatibility review
+
+Compared the shipped tailwind source copies against installed 1.0.133: ProductListPage, useAppliedFilters, CartPage, ProductPage, ProductDetails, ProductGallery and AddToCartForm are byte-identical. No new upstream component changes to port. This does not assert that every historical fork is fully synchronized. See docs/TWILIGHT_WEEKLY_2026-10-29.md for SDK/component release boundaries and live-store verification gaps.

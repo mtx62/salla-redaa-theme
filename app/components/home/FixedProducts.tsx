@@ -20,13 +20,24 @@ export interface FixedProductsProps {
   };
 }
 
+function formatTitle(title?: string) {
+  if (!title) return null;
+  const parts = title.trim().split(' ');
+  if (parts.length > 1) {
+    const first = parts.slice(0, -1).join(' ');
+    const last = parts[parts.length - 1];
+    return <>{first} <span>{last}</span></>;
+  }
+  return title;
+}
+
 /**
  * `fixed-products` home block (`s-block--fixed-products`).
  *
  * Fork of the engine block — identical markup and data flow, only swapped to the
  * theme's {@link ProductCard} wrapper so the grid here gets the same card
- * treatment as every other product list (solid add-to-cart button, wishlist
- * moved to the footer; see `04-components/product.scss`).
+ * treatment as every other product list (reference action tray, ratings and
+ * real options; see `04-components/reference-card.scss`).
  * Registered in `app/router.tsx`.
  *
  * Unlike the engine block, it shows as many products as the merchant's `limit`,
@@ -62,7 +73,7 @@ export function FixedProducts({ data }: FixedProductsProps) {
       {title && (
         <div className="s-block__title">
           <div className="right-side">
-            <h2>{title}</h2>
+            <h2>{formatTitle(title)}</h2>
           </div>
           {data.display_all_url && (
             <Link to={data.display_all_url} className="s-block__display-all">

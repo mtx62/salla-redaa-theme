@@ -1,9 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Page } from '@salla.sa/twilight-theme-engine/types';
 import { CartPage } from '../../../app/components/cart/CartPage';
 
+const ready = vi.hoisted(() => ({ auto: true, callback: undefined as undefined | (() => void) }));
+vi.mock('@salla.sa/twilight-theme-engine/utils', () => ({
+  whenSallaReady: (callback: () => void) => { ready.callback = callback; if (ready.auto) callback(); return () => { ready.callback = undefined; }; },
+  onSallaEvent: () => () => {},
+}));
 const makeCart = () => ({
   id: 5,
   items: [
@@ -99,10 +104,21 @@ function renderPage() {
 }
 
 describe('CartPage', () => {
+  it('waits for SDK readiness instead of showing a false empty cart during hydration', async () => {
+    ready.auto = false;
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const { queryByTestId, getByTestId } = render(<QueryClientProvider client={client}><CartPage page={{} as Page} /></QueryClientProvider>);
+    expect(queryByTestId('cart-empty-message')).toBeNull();
+    expect(getByTestId('skeleton')).toBeTruthy();
+    act(() => ready.callback?.());
+    await waitFor(() => expect(queryByTestId('skeleton')).toBeNull());
+  });
+
   let originalSalla: unknown;
   let getCurrentCartId: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
+  ready.auto = true;
     cartData = makeCart();
     cartError = null;
     getCurrentCartId = vi.fn(() => Promise.resolve(5));

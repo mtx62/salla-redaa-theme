@@ -4,6 +4,7 @@ import { render, fireEvent, act } from '@testing-library/react';
 import { Header } from '../../../app/components/layout/Header';
 import { HOME_ROUTE_ID } from '../../../app/lib/routeIds';
 
+const navigate = vi.hoisted(() => vi.fn());
 const state = {
   store: {
     url: '/',
@@ -14,6 +15,7 @@ const state = {
   } as Record<string, unknown>,
   theme: { settings: {} } as Record<string, unknown>,
   isHome: true,
+  isLoggedIn: false,
   routeIds: [] as string[],
 };
 
@@ -31,6 +33,11 @@ vi.mock('@tanstack/react-router', () => ({
 vi.mock('@salla.sa/twilight-theme-engine/providers', () => ({
   useTwilight: () => ({ store: state.store, theme: state.theme }),
   useIsHome: () => state.isHome,
+  useNavigate: () => navigate,
+}));
+
+vi.mock('@salla.sa/twilight-theme-engine/hooks/useUser', () => ({
+  useUser: () => ({ isLoggedIn: state.isLoggedIn }),
 }));
 
 vi.mock('@salla.sa/twilight-theme-engine/i18n', () => ({
@@ -42,6 +49,7 @@ vi.mock('@salla.sa/twilight-theme-engine/hooks', () => ({
 }));
 
 vi.mock('@salla.sa/twilight-theme-engine/common', () => ({
+  Link: ({ to, children, ...props }: { to: string; children?: React.ReactNode; className?: string }) => <a href={to} {...props}>{children}</a>,
   Image: (props: Record<string, unknown>) => (
     <img alt={String(props.alt ?? '')} src={String(props.src ?? '')} />
   ),
@@ -59,20 +67,29 @@ vi.mock('@salla.sa/twilight-theme-engine/layout', () => ({
 }));
 vi.mock('@salla.sa/twilight-components-react/search', () => ({
   SallaSearch: () => <salla-search />,
+  SallaSearchCore: () => <salla-search />,
 }));
 vi.mock('@salla.sa/twilight-components-react/social', () => ({
   SallaSocial: () => <salla-social />,
 }));
 vi.mock('@salla.sa/twilight-components-react/user-menu', () => ({
-  SallaUserMenu: () => <salla-user-menu />,
+  SallaUserMenu: ({ children }: { children?: React.ReactNode }) => <salla-user-menu>{children}</salla-user-menu>,
 }));
 vi.mock('@salla.sa/twilight-components-react/cart-summary', () => ({
   SallaCartSummary: ({ children }: { children?: React.ReactNode }) => (
-    <salla-cart-summary>{children}</salla-cart-summary>
+    <salla-cart-summary><a href="https://example.com/cart">Cart</a>{children}</salla-cart-summary>
   ),
 }));
 
 beforeEach(() => {
+  vi.stubGlobal(
+    'IntersectionObserver',
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+  );
   state.store = {
     url: '/',
     name: 'Acme',
@@ -82,6 +99,7 @@ beforeEach(() => {
   };
   state.theme = { settings: {} };
   state.isHome = true;
+  state.isLoggedIn = false;
   state.routeIds = [];
 });
 
@@ -91,6 +109,11 @@ afterEach(() => {
 });
 
 describe('Header', () => {
+  it('routes the cart summary to the local engine cart page', () => {
+    const { getByText } = render(<Header />);
+    fireEvent.click(getByText('Cart'));
+    expect(navigate).toHaveBeenCalledWith('/cart');
+  });
   it('renders the shell: logo, actions, search modal, cart, and the hook slots', () => {
     const { container, getAllByLabelText } = render(<Header />);
     expect(container.querySelector('header.site-header')).toBeTruthy();
@@ -98,8 +121,8 @@ describe('Header', () => {
     expect(container.querySelector('salla-user-menu')).toBeTruthy();
     expect(container.querySelector('salla-cart-summary')).toBeTruthy();
     expect(container.querySelector('salla-search')).toBeTruthy();
-    // One search trigger, in the actions group opposite the menu button.
-    expect(getAllByLabelText('Search')).toHaveLength(1);
+    // Separate desktop field and mobile icon, switched by responsive CSS.
+    expect(getAllByLabelText('Search')).toHaveLength(2);
     expect(container.querySelector('[data-hook-slot="header:start"]')).toBeTruthy();
     expect(container.querySelector('[data-hook-slot="header:end"]')).toBeTruthy();
   });
@@ -138,7 +161,7 @@ describe('Header', () => {
     expect(intro?.querySelector('a[href^="tel:"], a[href^="mailto:"]')).toBeNull();
   });
 
-  it("server-renders the store's phone and email in the default layout's top bar", () => {
+  it('keeps contacts out of the default layout top bar so they stay cleanly in the footer', () => {
     vi.stubGlobal(
       'IntersectionObserver',
       class {
@@ -150,26 +173,6 @@ describe('Header', () => {
     state.theme = { settings: { header_layout: 'default' } };
     state.store = { ...state.store, contacts: { phone: '8001111210', email: 'hi@acme.test' } };
     const { container } = render(<Header />);
-    const contacts = container.querySelector('[data-testid="store-header-contacts"]')!;
-    // Plain links, not a web component that fills in after the SDK loads.
-    expect(contacts.tagName).toBe('DIV');
-    expect(contacts.querySelector('a[href="tel:8001111210"]')?.textContent).toBe('8001111210');
-    expect(contacts.querySelector('a[href="mailto:hi@acme.test"]')?.textContent).toBe('hi@acme.test');
-  });
-
-  it('leaves the contacts out of the top bar when the store has neither phone nor email', () => {
-    vi.stubGlobal(
-      'IntersectionObserver',
-      class {
-        observe() {}
-        unobserve() {}
-        disconnect() {}
-      }
-    );
-    state.theme = { settings: { header_layout: 'default' } };
-    state.store = { ...state.store, contacts: { whatsapp: '966500000000' } };
-    const { container } = render(<Header />);
-    expect(container.querySelector('.site-header__topnav')).toBeTruthy();
     expect(container.querySelector('[data-testid="store-header-contacts"]')).toBeNull();
   });
 
@@ -232,8 +235,8 @@ describe('Header', () => {
   it('dispatches the search event when the search button is clicked', () => {
     const dispatch = vi.fn();
     (window as unknown as { salla: unknown }).salla = { event: { dispatch } };
-    const { getByLabelText } = render(<Header />);
-    fireEvent.click(getByLabelText('Search'));
+    const { getAllByLabelText } = render(<Header />);
+    fireEvent.click(getAllByLabelText('Search')[0]);
     expect(dispatch).toHaveBeenCalledWith('search::open');
   });
 
@@ -327,5 +330,32 @@ describe('Header', () => {
     const { getByTestId } = render(<Header />);
 
     expect(getByTestId('advertisement-bar-render').closest('.site-header__ad')).not.toBeNull();
+  });
+});
+
+ describe('account trigger ownership', () => {
+  it('renders one guest login slot without a second account trigger', () => {
+    const { container } = render(<Header />);
+    const menu = container.querySelector('salla-user-menu')!;
+    expect(menu.querySelectorAll('[slot="login-btn"]')).toHaveLength(1);
+    expect(menu.querySelector('[slot="trigger"]')).toBeNull();
+  });
+  it('leaves the logged-in avatar to the native user menu', () => {
+    state.isLoggedIn = true;
+    const { container } = render(<Header />);
+    const menu = container.querySelector('salla-user-menu')!;
+    expect(menu.querySelector('[slot="login-btn"]')).toBeNull();
+    expect(menu.querySelector('[slot="trigger"]')).toBeNull();
+  });
+});
+
+describe('single-field header search', () => {
+  it('keeps category selection out of search while retaining navigation categories', () => {
+    state.theme = { settings: { header_layout: 'default', header_is_sticky: false } };
+    const { container } = render(<Header />);
+    const search = container.querySelector('.site-header__desktop-search')!;
+    expect(search.querySelector('.site-header__search-category')).toBeNull();
+    expect(search.textContent).not.toContain('Categories');
+    expect(container.querySelector('.site-header__navigation .site-header__categories')).toBeTruthy();
   });
 });

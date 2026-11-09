@@ -1,0 +1,542 @@
+/* =========================================================================
+   Generic Store Front styling — Matches docs/inspiration/generic store-tailwindcss-final
+   ========================================================================= */
+
+:root {
+  --store-hero-height: 720px;
+}
+
+/* Animations for Hero floating leaf/shapes */
+@keyframes rotaleLeaf {
+  from {
+    transform: rotate(5deg);
+  }
+  to {
+    transform: rotate(-5deg);
+  }
+}
+
+@keyframes moveLeaf {
+  from {
+    transform: translateX(5px);
+  }
+  to {
+    transform: translateX(-5px);
+  }
+}
+
+/* --- Hero Section -------------------------------------------------------- */
+.s-block--enhanced-slider {
+  .swiper-slide {
+    aspect-ratio: auto;
+    height: auto;
+  }
+  .s-skeleton-slider-image {
+    height: var(--store-hero-height) !important;
+    aspect-ratio: auto;
+  }
+  .s-slider-nav-arrow {
+    color: #3d4750 !important;
+    &:hover {
+      background: #e9ecf7 !important;
+    }
+  }
+  .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    border: 1px solid #3d4750;
+    background: transparent !important;
+    opacity: 1;
+    transition: all 0.3s ease;
+  }
+  .swiper-pagination-bullet-active {
+    width: 28px;
+    border-radius: 6px;
+    background: #3d4750 !important;
+  }
+  .store-hero__cta {
+    margin-top: 28px;
+    border: 1px solid #3d4750;
+    border-radius: 10px;
+    background: transparent;
+    color: #3d4750;
+    box-shadow: none;
+    min-height: 44px;
+    padding: 8px 24px;
+    gap: 16px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+
+    &:hover {
+      background: var(--color-primary, #6c7fd8);
+      border-color: var(--color-primary, #6c7fd8);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+    &:focus-visible {
+      outline: 2px solid var(--color-primary, #6c7fd8);
+      outline-offset: 4px;
+    }
+  }
+}
+
+.store-hero {
+  position: relative;
+  overflow: hidden;
+  background-color: #f8f8fb;
+  min-height: var(--store-hero-height);
+
+  &__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    min-height: var(--store-hero-height);
+    gap: 24px;
+    padding-block: 50px 0;
+  }
+
+  &__copy {
+    padding-inline: 20px;
+    min-width: 0;
+    padding-bottom: 40px;
+  }
+
+  &__eyebrow {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-primary, #6c7fd8);
+    margin-bottom: 16px;
+    letter-spacing: 0.03rem;
+  }
+
+  h2 {
+    font-size: clamp(38px, 4vw, 55px);
+    line-height: 1.2;
+    font-weight: 700;
+    color: #3d4750;
+    max-width: 560px;
+    overflow-wrap: anywhere;
+    letter-spacing: 0.03rem;
+  }
+
+  &__description {
+    max-width: 480px;
+    margin-top: 18px;
+    color: #777777;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  &__visual {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 1;
+    margin-inline: auto;
+  }
+
+  &__visual::before {
+    content: '';
+    position: absolute;
+    inset: 3%;
+    z-index: -1;
+    border-radius: 50%;
+    background-color: #e0e3eb;
+  }
+
+  &__visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 50%;
+    border: 1px dashed #3d4750;
+    opacity: 0.65;
+  }
+
+  &__media {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 10px;
+
+    picture {
+      display: block;
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+  }
+
+  /* Floating decorative leaves */
+  &__shape {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.7;
+
+    &--1 {
+      top: -50px;
+      inset-inline-start: -50px;
+      animation: rotaleLeaf 3s linear infinite alternate;
+      width: 200px;
+    }
+
+    &--2 {
+      bottom: -100px;
+      inset-inline-start: -50px;
+      animation: rotaleLeaf 3s linear infinite alternate;
+      width: 150px;
+    }
+
+    &--3 {
+      bottom: -100px;
+      inset-inline-start: 30%;
+      animation: moveLeaf 2s linear infinite alternate;
+      width: 180px;
+    }
+
+    &--4 {
+      top: 100px;
+      inset-inline-end: -50px;
+      animation: rotaleLeaf 4s linear infinite alternate;
+      width: 150px;
+    }
+  }
+}
+
+[dir='ltr'] .store-hero__arrow {
+  transform: rotate(180deg);
+}
+
+/* --- Service Features Section -------------------------------------------- */
+.section-service {
+  background-color: transparent;
+}
+
+.store-services {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+
+  &__item {
+    text-align: center;
+    padding: 30px 20px;
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
+    background-color: #f8f8fb;
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 48px;
+    margin-bottom: 16px;
+
+    img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    i {
+      font-size: 38px;
+      color: var(--color-primary, #6c7fd8);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #3d4750;
+    margin-bottom: 6px;
+    letter-spacing: 0.02rem;
+  }
+
+  p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #777777;
+    margin: 0;
+  }
+}
+
+/* --- Section Titles (Centered with primary span) ------------------------- */
+.s-block--fixed-products,
+.s-block--products-slider {
+  .s-block__title {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 36px;
+
+    .right-side {
+      max-width: 70%;
+    }
+
+    h2 {
+      color: #3d4750;
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: 0.03rem;
+
+      span {
+        color: var(--color-primary, #6c7fd8);
+      }
+    }
+
+    .s-block__display-all {
+      position: absolute;
+      inset-inline-end: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      font-weight: 500;
+      color: #777777;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--color-primary, #6c7fd8);
+      }
+    }
+  }
+}
+
+/* --- Testimonials Section ------------------------------------------------ */
+.s-block--custom-testimonials {
+  background-color: #f8f8fb;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+  padding-block: 70px;
+
+  .s-testimonials {
+    background-position: top left, bottom right;
+    background-size: 260px auto;
+    background-repeat: no-repeat;
+  }
+
+  .s-testimonials__head {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .s-testimonials__title {
+    color: #3d4750;
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  .s-testimonials__desc {
+    color: #777777;
+    font-size: 15px;
+    margin-top: 8px;
+  }
+
+  .testimonial-card {
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
+    text-align: center;
+    flex-basis: calc((min(100vw - 40px, 1280px) - 48px) / 3);
+    padding: 28px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  .testimonial-card__head {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .testimonial-card__person {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .testimonial-card__avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .testimonial-card__name {
+    font-size: 18px;
+    font-weight: 500;
+    color: #3d4750;
+  }
+
+  .testimonial-card__rating {
+    background: transparent;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .testimonial-card__text {
+    color: #777777;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+}
+
+/* --- Responsive Media Queries -------------------------------------------- */
+@media (max-width: 1023px) {
+  :root {
+    --store-hero-height: 760px;
+  }
+  .store-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    gap: 30px;
+    padding-block: 36px 50px;
+  }
+  .store-hero__copy {
+    text-align: center;
+    padding-bottom: 0;
+  }
+  .store-hero h2,
+  .store-hero__description {
+    margin-inline: auto;
+  }
+  .store-hero__visual {
+    max-width: 420px;
+  }
+  .store-services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 639px) {
+  :root {
+    --store-hero-height: 660px;
+  }
+  .store-hero__copy {
+    padding-inline: 12px;
+  }
+  .store-hero__eyebrow {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .store-hero h2 {
+    font-size: 32px;
+  }
+  .store-hero__description {
+    font-size: 15px;
+    margin-top: 14px;
+  }
+  .store-hero__visual {
+    max-width: 300px;
+  }
+  .store-hero__shape {
+    width: 100px;
+  }
+  .store-services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .store-services__item {
+    padding: 20px 12px;
+  }
+  .store-services h3 {
+    font-size: 15px;
+  }
+  .store-services p {
+    font-size: 13px;
+  }
+  .s-block--custom-testimonials .testimonial-card {
+    flex-basis: min(85vw, 340px);
+  }
+  .s-block--fixed-products .s-block__title,
+  .s-block--products-slider .s-block__title {
+    flex-wrap: wrap;
+    gap: 12px;
+    h2 {
+      font-size: 22px;
+    }
+    .right-side {
+      max-width: 100%;
+      width: 100%;
+    }
+    .s-block__display-all {
+      position: static;
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .store-hero *,
+  .s-product-card-vertical,
+  .s-product-card-vertical img,
+  .gs-card,
+  .gs-card img {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Video slides use the complete slide as the media canvas; the copy overlays it. */
+.store-hero--video {
+  isolation: isolate;
+  .store-hero__background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    container-type: size;
+    pointer-events: none;
+    picture, picture img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .enhanced-slider__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .enhanced-slider__video--embed { inset: 50% auto auto 50%; width: max(100cqw, 177.78cqh); height: max(100cqh, 56.25cqw); translate: -50% -50%; }
+  }
+  .store-hero__shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgb(0 0 0 / .2), rgb(0 0 0 / .6)); pointer-events: none; }
+  .store-hero__inner { display: flex; align-items: center; justify-content: center; padding-block: 60px; }
+  .store-hero__copy { width: 100%; max-width: 850px; padding: 0 20px; text-align: center; }
+  h2, .store-hero__description { max-width: 100%; margin-inline: auto; color: white; }
+  .store-hero__eyebrow { color: white; }
+  h2 { text-shadow: 0 2px 16px rgb(0 0 0 / .3); }
+  .store-hero__cta { border-color: white; color: white; }
+}
