@@ -1,7 +1,7 @@
 {
-  "name": "salla-react-theme",
+  "name": "redaa",
   "version": "1.0.0",
-  "description": "salla-react-theme - a Salla React theme",
+  "description": "Redaa - Luxury Salla React Theme",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
