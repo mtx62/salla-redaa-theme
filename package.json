@@ -1,7 +1,7 @@
 {
-  "name": "sahab",
+  "name": "redaa-jadeed",
   "version": "1.0.0",
-  "description": "Sahab - Luxury Salla React Theme",
+  "description": "Redaa Jadeed - Luxury Salla React Theme",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
