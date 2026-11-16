@@ -65,13 +65,29 @@
 
 ### 6. ملفات الأصول وصور المتجر التسويقية (Marketplace Showcase Assets)
 * **الأيقونة الأساسية للثيم (512x512):** `docs/marketplace/theme-icon.png`
-* **السلايدات التسويقية المصممة للعرض في متجر سلة (Marketing Mockup Slides - 2560x1440):**
-  1. **السلايد 1 (الهوية والهيدر السينمائي):** `docs/marketplace/01-hero-showcase.png`
-  2. **السلايد 2 (بطاقات وتجربة المنتجات):** `docs/marketplace/02-products-showcase.png`
-  3. **السلايد 3 (أقسام المتجر والبانرات التحريرية):** `docs/marketplace/03-experience-showcase.png`
-  4. **السلايد 4 (الفوتر العائم وبوابات الدفع والتوثيق):** `docs/marketplace/04-footer-trust-showcase.png`
-* **اللقطات المباشرة الكاملة للمتجر (Clean Fullpage Shots - 2880x1800):**
-  * `docs/marketplace/01-hero-header.png`
-  * `docs/marketplace/02-products-collection.png`
-  * `docs/marketplace/03-product-experience.png`
-  * `docs/marketplace/04-footer-trust.png`
+
+#### السلايدات التسويقية وبيانات الإدخال المعتمدة (وفق قيود سلة: العنوان ≤ 30 حرف، الوصف ≤ 100 حرف):
+
+1. **الصورة 1:** `docs/marketplace/01-hero-showcase.png`
+   * **العنوان (عربي):** `هيدر سينمائي وهوية فاخرة` (24 حرف)
+   * **الوصف (عربي):** `هيدر عائم مدمج بفيديو وتموجات ناعمة مع كبسولة زجاجية لاختيار اللغة تمنح متجرك فخامة استثنائية.` (94 حرف)
+   * **العنوان (إنجليزي):** `Floating Header & Identity` (26 حرف)
+   * **الوصف (إنجليزي):** `Floating editorial navbar with video banner and frosted glass language capsule for luxury stores.` (97 حرف)
+
+2. **الصورة 2:** `docs/marketplace/02-products-showcase.png`
+   * **العنوان (عربي):** `بطاقات منتجات تفاعلية ذكية` (26 حرف)
+   * **الوصف (عربي):** `عرض فاخر بتبديل صور الهوفر، وشارات الخصم الذهبية، وتقييم النجوم مع إضافة سريعة وخيارات مقاسات.` (94 حرف)
+   * **العنوان (إنجليزي):** `Interactive Product Cards` (25 حرف)
+   * **الوصف (إنجليزي):** `Luxury cards with hover image switch, gold discount badges, star ratings, and instant quick-buy.` (96 حرف)
+
+3. **الصورة 3:** `docs/marketplace/03-experience-showcase.png`
+   * **العنوان (عربي):** `أقسام تحريرية وتجارب العملاء` (28 حرف)
+   * **الوصف (عربي):** `بانرات مربعة أنيقة وسلايدر مخصص لآراء وتقييمات العملاء مع إبراز مميزات المتجر والشحن السريع.` (92 حرف)
+   * **العنوان (إنجليزي):** `Editorial Story & Reviews` (25 حرف)
+   * **الوصف (إنجليزي):** `Square editorial banners, reviews slider, and store features badges to build customer trust.` (92 حرف)
+
+4. **الصورة 4:** `docs/marketplace/04-footer-trust-showcase.png`
+   * **العنوان (عربي):** `فوتر عائم وبوابات دفع وتوثيق` (28 حرف)
+   * **الوصف (عربي):** `فوتر يبرز توثيق المركز السعودي للأعمال SBC، الرقم الضريبي، وكافة بوابات الدفع مدى، تمارا، وتابي.` (96 حرف)
+   * **العنوان (إنجليزي):** `Floating Footer & Payments` (26 حرف)
+   * **الوصف (إنجليزي):** `Modern island footer highlighting official SBC verification, VAT, Mada, Apple Pay, and Tamara.` (94 حرف)
