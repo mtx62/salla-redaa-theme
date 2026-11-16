@@ -63,10 +63,15 @@
 
 ---
 
-### 6. ملفات الأصول والصور المرفقة (Assets Checklist)
-- **أيقونة الثيم الأساسية (Theme Icon - 512x512):** `docs/marketplace/theme-icon.png`
-- **أيقونات بديلة إضافية:** `docs/marketplace/theme-icon-ai-v3.png` و `docs/marketplace/theme-icon-ai-v2.png`
-- **الصورة الاستعراضية 1 (الهيدر والفيديو):** `docs/marketplace/01-hero-header.png` (2880x1800 Retina)
-- **الصورة الاستعراضية 2 (شبكة المنتجات وبطاقات العرض):** `docs/marketplace/02-products-collection.png` (2880x1800 Retina)
-- **الصورة الاستعراضية 3 (تجارب العملاء ومميزات المتجر):** `docs/marketplace/03-product-experience.png` (2880x1800 Retina)
-- **الصورة الاستعراضية 4 (الفوتر العائم وبوابات الدفع والتوثيق):** `docs/marketplace/04-footer-trust.png` (2880x1800 Retina)
+### 6. ملفات الأصول وصور المتجر التسويقية (Marketplace Showcase Assets)
+* **الأيقونة الأساسية للثيم (512x512):** `docs/marketplace/theme-icon.png`
+* **السلايدات التسويقية المصممة للعرض في متجر سلة (Marketing Mockup Slides - 2560x1440):**
+  1. **السلايد 1 (الهوية والهيدر السينمائي):** `docs/marketplace/01-hero-showcase.png`
+  2. **السلايد 2 (بطاقات وتجربة المنتجات):** `docs/marketplace/02-products-showcase.png`
+  3. **السلايد 3 (أقسام المتجر والبانرات التحريرية):** `docs/marketplace/03-experience-showcase.png`
+  4. **السلايد 4 (الفوتر العائم وبوابات الدفع والتوثيق):** `docs/marketplace/04-footer-trust-showcase.png`
+* **اللقطات المباشرة الكاملة للمتجر (Clean Fullpage Shots - 2880x1800):**
+  * `docs/marketplace/01-hero-header.png`
+  * `docs/marketplace/02-products-collection.png`
+  * `docs/marketplace/03-product-experience.png`
+  * `docs/marketplace/04-footer-trust.png`
