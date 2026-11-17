@@ -642,6 +642,28 @@ body .app-inner .s-block--enhanced-slider .swiper-slide { background: var(--stor
   }
 }
 
+/* Mobile video overlay: float header over video when hero overlay is active */
+@media (max-width: 1023px) {
+  body.has-hero-overlay .site-header--home {
+    position: absolute !important;
+    top: 0 !important;
+    inset-inline: 0 !important;
+    z-index: 40 !important;
+    background: transparent !important;
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+
+    .site-header__bar {
+      background: transparent !important;
+      border-bottom: 0 !important;
+      box-shadow: none !important;
+    }
+  }
+}
+
 /* Oversized type from the orange reference; organic silhouettes from the pink one. */
 .store-hero {
   position: relative;
@@ -717,8 +739,13 @@ body .app-inner .s-block--enhanced-slider .swiper-slide { background: var(--stor
   min-height: 48px; padding-inline: 28px; margin-top: 30px; font-size: 16px;
   &:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); transform: translateY(-2px); }
 }
+/* Fullscreen Video Hero: 100vh canvas positioned under floating header via z-index */
 .store-hero--video {
-  min-height: clamp(480px, 60vh, 560px) !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  position: relative;
+  z-index: 1;
 
   .store-hero__inner {
     display: flex !important;
@@ -726,14 +753,17 @@ body .app-inner .s-block--enhanced-slider .swiper-slide { background: var(--stor
     justify-content: center !important;
     align-items: flex-start !important;
     max-width: 1280px;
+    height: 100%;
     margin-inline: auto;
+    position: relative;
+    z-index: 2;
   }
 
   @media (min-width: 1024px) {
-    .store-hero__inner { padding-block: calc(var(--top-bar-height, 38px) + 84px + 16px) 36px !important; }
+    .store-hero__inner { padding-block: calc(var(--top-bar-height, 38px) + 84px + 30px) 60px !important; }
   }
   @media (max-width: 1023px) {
-    .store-hero__inner { padding-block: 60px 36px !important; }
+    .store-hero__inner { padding-block: calc(var(--app-safe-area-top, 0px) + 72px + 20px) 48px !important; }
   }
   .store-hero__copy { max-width: 810px; text-align: start; padding-inline: 0; }
   h2 { font-size: clamp(40px, 5.4vw, 76px); max-width: 780px; color: white; }

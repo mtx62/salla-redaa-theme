@@ -311,14 +311,33 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
   const hasVideo = motionAllowed && slides.some((slide) => parseSlideVideo(slide.video || slide['slides.video' as keyof SliderBanner]));
   useSlideVideos(root, hasVideo);
 
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+
+  // Only activate header overlay when the current active slide is a video
+  const activeSlide = slides[activeSlideIndex] ?? slides[0];
+  const activeIsVideo = motionAllowed && Boolean(
+    parseSlideVideo(activeSlide?.video || (activeSlide as Record<string, unknown>)?.[`slides.video`])
+  );
+  const isOverlayActive = isFirstBlock && activeIsVideo;
+
   useEffect(() => {
-    if (isFirstBlock && hasVideo && typeof document !== 'undefined') {
+    if (isOverlayActive && typeof document !== 'undefined') {
       document.body.classList.add('has-hero-overlay');
       return () => {
         document.body.classList.remove('has-hero-overlay');
       };
+    } else if (typeof document !== 'undefined') {
+      document.body.classList.remove('has-hero-overlay');
     }
-  }, [isFirstBlock, hasVideo]);
+  }, [isOverlayActive]);
+
+  const handleSlideChange = useCallback((e: any) => {
+    const swiper = e?.detail ?? e;
+    const realIdx = typeof swiper?.realIndex === 'number'
+      ? swiper.realIndex
+      : (typeof swiper?.activeIndex === 'number' ? swiper.activeIndex : 0);
+    setActiveSlideIndex(realIdx);
+  }, []);
 
   if (!slides.length) return null;
 
@@ -336,6 +355,7 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
         type="fullwidth"
         className={inContainer ? 'in-container' : undefined}
         onAfterInit={showPoster ? hidePoster : undefined}
+        onSlideChange={handleSlideChange}
       >
         <div slot="items">
           {slides.map((slide, index) => (
