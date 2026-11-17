@@ -305,10 +305,20 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
       .then(() => setShowPoster(false));
   }, [firstImage]);
 
+  const isFirstBlock = position === 1;
   const root = useRef<HTMLDivElement>(null);
   const motionAllowed = useMotionAllowed();
   const hasVideo = motionAllowed && slides.some((slide) => parseSlideVideo(slide.video || slide['slides.video' as keyof SliderBanner]));
   useSlideVideos(root, hasVideo);
+
+  useEffect(() => {
+    if (isFirstBlock && hasVideo && typeof document !== 'undefined') {
+      document.body.classList.add('has-hero-overlay');
+      return () => {
+        document.body.classList.remove('has-hero-overlay');
+      };
+    }
+  }, [isFirstBlock, hasVideo]);
 
   if (!slides.length) return null;
 

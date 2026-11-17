@@ -213,14 +213,30 @@ body .app-inner .s-block--enhanced-slider .swiper-slide { background: var(--stor
       display: none !important;
     }
 
-    /* On homepage: header floats over the top edge of the hero media (video / image) */
+    /* In normal mode: header sits in natural document flow so the first section starts below it */
     &.site-header--home {
       display: block !important;
+      position: relative;
+      z-index: 40;
+      width: 100%;
+      background: var(--store-paper);
+
+      .site-header__topnav {
+        background: var(--store-paper-deep);
+        border-bottom: 1px solid var(--store-line);
+      }
+
+      .site-header__bar-outer {
+        background: var(--store-paper);
+      }
+    }
+
+    /* ONLY when hero overlay is active (e.g. video hero or full-screen hero media): float over hero */
+    body.has-hero-overlay &.site-header--home {
       position: absolute !important;
       top: 0 !important;
       inset-inline: 0 !important;
       z-index: 40 !important;
-      width: 100% !important;
       background: transparent !important;
       pointer-events: none;
 
@@ -634,9 +650,6 @@ body .app-inner .s-block--enhanced-slider .swiper-slide { background: var(--stor
   &__inner {
     gap: 5%;
     padding-block: 54px 76px;
-    @media (min-width: 1024px) {
-      padding-top: calc(var(--top-bar-height, 38px) + 84px + 24px) !important;
-    }
   }
   &__copy { padding-inline: 0; padding-bottom: 0; }
   h2 { max-width: 700px; font-size: clamp(48px, 5.8vw, 86px); line-height: 1.13; letter-spacing: -.025em; color: var(--color-primary); }
