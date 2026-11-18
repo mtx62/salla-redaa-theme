@@ -773,6 +773,161 @@ body .app-inner .s-block--enhanced-slider .swiper-slide { background: var(--stor
 }
 [dir='ltr'] .store-hero--video .store-hero__shade { transform: scaleX(-1); }
 
+/* Enhanced Slider: Drag & Swipe support */
+.enhanced-slider {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+
+  .s-slider-container {
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  .swiper-slide {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+
+  .store-hero {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+
+    img {
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+  }
+
+  .store-hero__background,
+  .store-hero__shade,
+  .enhanced-slider__video {
+    pointer-events: none !important;
+  }
+
+  .store-hero__cta,
+  a, button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    user-select: auto;
+  }
+}
+
+/* Enhanced Slider: Scroll Tracker (Pagination Dots) & Arrows above the 72px wave */
+.enhanced-slider,
+.s-block--enhanced-slider {
+  .swiper-pagination-bullets.swiper-pagination-horizontal.swiper-pagination,
+  .swiper-pagination {
+    position: absolute !important;
+    inset-x: 0 !important;
+    bottom: 86px !important;
+    z-index: 25 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    pointer-events: auto !important;
+    transform: none !important;
+
+    @media (max-width: 639px) {
+      bottom: 58px !important;
+    }
+  }
+
+  .s-slider-block__title {
+    position: absolute !important;
+    inset-x: 0 !important;
+    bottom: 86px !important;
+    z-index: 25 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    pointer-events: none !important;
+
+    @media (max-width: 639px) {
+      bottom: 58px !important;
+    }
+  }
+
+  .s-slider-block__title-nav {
+    pointer-events: auto !important;
+  }
+
+  /* Default bullets for Video slides */
+  .swiper-pagination-bullet {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 9999px !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.85) !important;
+      transform: scale(1.15);
+    }
+  }
+
+  .swiper-pagination-bullet-active {
+    width: 32px !important;
+    border-radius: 9999px !important;
+    background: #ffffff !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* Image slide adaptive styling for bullets and arrows */
+body:not(.has-hero-overlay) {
+  .enhanced-slider,
+  .s-block--enhanced-slider {
+    .swiper-pagination-bullet {
+      background: rgba(73, 48, 57, 0.3) !important;
+      border: 1px solid rgba(73, 48, 57, 0.2) !important;
+      box-shadow: none !important;
+
+      &:hover {
+        background: rgba(73, 48, 57, 0.6) !important;
+      }
+    }
+
+    .swiper-pagination-bullet-active {
+      background: var(--color-primary, #6e4638) !important;
+      border-color: var(--color-primary, #6e4638) !important;
+      box-shadow: 0 2px 8px rgba(73, 48, 57, 0.25) !important;
+    }
+
+    .s-slider-nav-arrow {
+      color: var(--color-primary, #6e4638) !important;
+
+      &:hover {
+        background: rgba(73, 48, 57, 0.08) !important;
+      }
+    }
+  }
+}
+
 /* Spacing between enhanced-slider and the next block: 0 so wave blends seamlessly */
 .s-block--enhanced-slider + .s-block {
   margin-top: 0 !important;

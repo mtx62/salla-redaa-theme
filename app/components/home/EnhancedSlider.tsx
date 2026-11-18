@@ -286,7 +286,16 @@ function GenericHeroSlide({ slide, poster, priority, motionAllowed, onReady, ind
 
 export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSliderProps) {
   const rawSlides = data.slider_banner || data.slides || [];
-  const slides = rawSlides;
+  const validSlides = rawSlides.filter((slide) => {
+    const r = slide as Record<string, unknown>;
+    return Boolean(
+      slide.image || r['slides.image'] ||
+      slide.video || r['slides.video'] ||
+      slide.title || r['slides.title'] ||
+      slide.description || r['slides.description']
+    );
+  });
+  const slides = validSlides.length > 0 ? validSlides : rawSlides;
   const position = data.position ?? 1;
   const hasMultipleSlides = slides.length > 1;
   const inContainer = Boolean(data.in_container);
@@ -304,6 +313,13 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
       .catch(() => undefined)
       .then(() => setShowPoster(false));
   }, [firstImage]);
+
+  useEffect(() => {
+    if (showPoster) {
+      const timer = window.setTimeout(() => setShowPoster(false), 2500);
+      return () => window.clearTimeout(timer);
+    }
+  }, [showPoster]);
 
   const isFirstBlock = position === 1;
   const root = useRef<HTMLDivElement>(null);
@@ -349,7 +365,24 @@ export const EnhancedSlider = memo(function EnhancedSlider({ data }: EnhancedSli
         id={`main-slider-${position}`}
         // Swiper's autoplay redraws every frame for its countdown, so a single slide skips it.
         autoPlay={hasMultipleSlides && motionAllowed && data.auto_play !== false}
-        sliderConfig={{ lazy: false, watchOverflow: true }}
+        loop={hasMultipleSlides}
+        sliderConfig={{
+          lazy: false,
+          watchOverflow: true,
+          allowTouchMove: true,
+          simulateTouch: true,
+          grabCursor: true,
+          touchRatio: 1,
+          touchAngle: 45,
+          threshold: 0,
+          touchStartPreventDefault: false,
+          resistance: true,
+          resistanceRatio: 0.85,
+          touchEventsTarget: 'wrapper',
+          preventClicks: true,
+          preventClicksPropagation: true,
+          loop: hasMultipleSlides,
+        }}
         showControls={hasMultipleSlides}
         pagination={hasMultipleSlides}
         type="fullwidth"

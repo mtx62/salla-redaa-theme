@@ -25,5 +25,79 @@
     "slider_background_size": "contain",
     "imageZoom": false
   },
-  "layout": null
+  "layout": [
+    {
+      "id": "b-4ec162a1b664",
+      "path": "enhanced-slider",
+      "fields": {
+        "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
+        "in_container": false,
+        "auto_play": true,
+        "slides": [
+          {
+            "image": "https://cdn.salla.sa/ZrBEO/MopzhoqpTkDObcKc8Q8n77AuydanfsGXdZO7iinH.jpg",
+            "title": "روِّج لمنتجاتك كصور متحركة",
+            "description": "اعرض المنتجات التي تود إبرازها لزوّار متجرك في هذه المساحة",
+            "without_overlay": false,
+            "video": "https://www.youtube.com/watch?v=VCPGMjCW0is"
+          },
+          {
+            "image": "https://cdn.salla.sa/ZrBEO/3gOhYSaIhaHxhH2IHWxJYDl9JHwxP6dGKiZFSq4K.jpg",
+            "title": "شجّع زوار متجرك على الشراء عبر عروض خاصة",
+            "description": "اعرض المنتجات التي تود إبرازها لزوّار متجرك في هذه المساحة",
+            "without_overlay": false
+          },
+          {
+            "image": "",
+            "video": "",
+            "title": "",
+            "description": "",
+            "btnname": "",
+            "url": "",
+            "without_overlay": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ffc55a256612",
+      "path": "photos-slider-with-text",
+      "fields": {
+        "key": "7b65ae0b-e4d0-49d0-b723-7bf3547d5deb",
+        "in_container": false,
+        "auto_play": true,
+        "slides": [
+          {
+            "image": "https://cdn.salla.sa/ZrBEO/MopzhoqpTkDObcKc8Q8n77AuydanfsGXdZO7iinH.jpg",
+            "title": "روِّج لمنتجاتك كصور متحركة",
+            "description": "اعرض المنتجات التي تود إبرازها لزوّار متجرك في هذه المساحة",
+            "without_overlay": false
+          },
+          {
+            "image": "https://cdn.salla.sa/ZrBEO/3gOhYSaIhaHxhH2IHWxJYDl9JHwxP6dGKiZFSq4K.jpg",
+            "title": "شجّع زوار متجرك على الشراء عبر عروض خاصة",
+            "description": "اعرض المنتجات التي تود إبرازها لزوّار متجرك في هذه المساحة",
+            "without_overlay": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-1e0d3a621070",
+      "path": "featured-products-special-offer",
+      "fields": {
+        "key": "5534e3c8-4c3c-480c-b547-d2f74d50f39e",
+        "main_product_title": "",
+        "main_product": [],
+        "items": [
+          {
+            "name": "أحدث المنتجات",
+            "type": "latest_products",
+            "category": "",
+            "chosen_products": null
+          }
+        ]
+      }
+    }
+  ]
 }
